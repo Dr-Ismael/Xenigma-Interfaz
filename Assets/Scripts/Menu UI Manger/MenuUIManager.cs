@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Text;
+using UnityEngine.UI;
 
 public class MenuUIManager : MonoBehaviour
 {
@@ -15,6 +17,11 @@ public class MenuUIManager : MonoBehaviour
     [SerializeField] private SpawnOnMap spawnOnMap;
     [SerializeField] private GameObject recomendacion;
     [SerializeField] private GameObject cercano;
+    [SerializeField] private GameObject finalizacion;
+    [SerializeField] private GameObject SigPunto;
+
+    [SerializeField] Text _lugarvisit;
+
 
     
  
@@ -29,8 +36,11 @@ public class MenuUIManager : MonoBehaviour
     bool hasSavedData;
     bool isrecomendado;
     bool iscercas;
+    bool isflinal;
+    bool isSiguiente;
 
     public int puntajeBD;
+    public double LugarV;
     
     // Start is called before the first frame update
     void Start()
@@ -44,6 +54,8 @@ public class MenuUIManager : MonoBehaviour
         {
             hasSavedData = false;
         }
+
+        _lugarvisit.text ="Total de lugares visitados: " + LugarV;
     }
 
     // Update is called once per frame
@@ -58,6 +70,7 @@ public class MenuUIManager : MonoBehaviour
         {
             eventPanelUserInRange.SetActive(true);
             isUIPanelActive = true;
+            LugarV += 1;
         }
     }
 
@@ -211,5 +224,44 @@ public class MenuUIManager : MonoBehaviour
                 
         }
     }
+
+    public void Displayfinal()
+    {
+        if(isflinal == false)
+        
+        {
+            finalizacion.SetActive(true);
+            isflinal = true;
+        }
+        else
+        {
+            finalizacion.SetActive(false);
+            isflinal = false; 
+                
+        }
+    }
+
+    public void Displaysiguiente()
+    {
+        if(isSiguiente == true)
+        
+        {
+            SigPunto.SetActive(false);
+            isSiguiente = false;
+        }
+        else
+        {
+            SigPunto.SetActive(true);
+            isSiguiente = true; 
+                
+        }
+    }
+
+    public void BTNfinalizar()
+    {
+        SceneManager.LoadScene("Registro");
+    }
+
+    
 
 }

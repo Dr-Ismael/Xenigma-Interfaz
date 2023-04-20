@@ -27,6 +27,7 @@ public class SpawnOnMap : MonoBehaviour
     GameObject _markerPrefab;
     [SerializeField] private Dropdown _dropdown;
     [SerializeField] private Dropdown _dropdown2;
+    [SerializeField] private GameObject _panel;
 
     List<GameObject> _spawnedObjects;
 
@@ -39,7 +40,7 @@ public class SpawnOnMap : MonoBehaviour
     
 
     private int selectedEventID = -1;
-    private const string SpawnedObjectsKey = "SpawnedObjects";
+
     
     private string activeFilters = "";
 
@@ -48,8 +49,10 @@ public class SpawnOnMap : MonoBehaviour
         _locations = new Vector2d[_locationStrings.Length];
         _spawnedObjects = new List<GameObject>();
         var options = new List<Dropdown.OptionData>();
-
-        LoadSpawnedObjects(); 
+ 
+        // Agregar opción "Elegir lugar" al inicio de la lista
+        options.Insert(0,    new Dropdown.OptionData("Agregar"));
+        
 
         for (var i = 0; i < _locationStrings.Length; i++)
         {
@@ -67,65 +70,17 @@ public class SpawnOnMap : MonoBehaviour
             options.Add(new Dropdown.OptionData(GetObjectName(i + 1)));
         }
 
-         _dropdown.ClearOptions();
+        // Agregar opciones al Dropdown y Dropdown2
+        _dropdown.ClearOptions();
         _dropdown.AddOptions(options);
         _dropdown.onValueChanged.AddListener(OnDropdownValueChanged);
-        _dropdown2.onValueChanged.AddListener(DropdownValue);
+
+        options.Insert(0, new Dropdown.OptionData("Eliminar"));
+        options.RemoveAt(1);
         _dropdown2.ClearOptions();
         _dropdown2.AddOptions(options);
+        _dropdown2.onValueChanged.AddListener(DropdownValue);
     }
-
-     private void SaveSpawnedObjects()
-    {
-        var spawnedObjectsData = new List<string>();
-
-        foreach (var spawnedObject in _spawnedObjects)
-        {
-            var position = spawnedObject.transform.position;
-            var rotation = spawnedObject.transform.rotation;
-            var scale = spawnedObject.transform.localScale;
-
-            var data = $"{position.x},{position.y},{position.z}|{rotation.x},{rotation.y},{rotation.z},{rotation.w}|{scale.x},{scale.y},{scale.z}";
-
-            spawnedObjectsData.Add(data);
-        }
-
-        var serializedData = string.Join(";", spawnedObjectsData);
-
-        PlayerPrefs.SetString(SpawnedObjectsKey, serializedData);
-    }
-
-    private void LoadSpawnedObjects()
-    {
-        if (PlayerPrefs.HasKey(SpawnedObjectsKey))
-        {
-            var serializedData = PlayerPrefs.GetString(SpawnedObjectsKey);
-            var spawnedObjectsData = serializedData.Split(';');
-
-            foreach (var data in spawnedObjectsData)
-            {
-                var parts = data.Split('|');
-                var positionParts = parts[0].Split(',');
-                var rotationParts = parts[1].Split(',');
-                var scaleParts = parts[2].Split(',');
-
-                var position = new Vector3(float.Parse(positionParts[0]), float.Parse(positionParts[1]), float.Parse(positionParts[2]));
-                var rotation = new Quaternion(float.Parse(rotationParts[0]), float.Parse(rotationParts[1]), float.Parse(rotationParts[2]), float.Parse(rotationParts[3]));
-                var scale = new Vector3(float.Parse(scaleParts[0]), float.Parse(scaleParts[1]), float.Parse(scaleParts[2]));
-
-                var spawnedObject = Instantiate(_markerPrefab, position, rotation, transform);
-                spawnedObject.transform.localScale = scale;
-
-                _spawnedObjects.Add(spawnedObject);
-            }
-        }
-    }
-
-    private void OnDestroy()
-    {
-        SaveSpawnedObjects(); // Guardar los objetos al salir de la escena
-    }
-    
 
     public void DropdownValueChanged(Dropdown change)
     {
@@ -397,6 +352,7 @@ public class SpawnOnMap : MonoBehaviour
     public void EventShow()
     {
         int count = _spawnedObjects.Count;
+        bool anyActiveEvents = false;
         for (int i = 0; i < count; i++)
         {
             var spawnedObject = _spawnedObjects[i];
@@ -406,34 +362,44 @@ public class SpawnOnMap : MonoBehaviour
 
             // Aplicar los filtros de acuerdo al eventoID
             var eventID = spawnedObject.GetComponent<EventPointer>().eventID;
-            spawnedObject.SetActive(
-                (_showParks && eventID >= 1 && eventID <= 5) ||
-                (_showMuseums && eventID >= 25 && eventID <= 28) ||
-                (_showStatues && eventID >= 6 && eventID <= 15) ||
-                (_showHistoric && eventID >= 16 && eventID <= 24) ||
-                (_showObj && eventID >= 29 && eventID <= 29)
-                
-
-            );
-                activeFilters = "";
-            if (_showParks)
-                activeFilters += "Parques, ";
-            if (_showMuseums)
-                activeFilters += "Museos, ";
-            if (_showStatues)
-                activeFilters += "estatuas, ";
-            if (_showHistoric)
-                activeFilters += "lugares historicos, ";
-            if (_showObj)
-                activeFilters += "";
-
-            // Remove the last comma and space
-            if (activeFilters.Length > 0)
-                activeFilters = activeFilters.Substring(0, activeFilters.Length - 2);
-
-            // Update the lugaresText UI Text component with the activeFilters variable
-            _lugares.text = "vas a visitar: " + activeFilters + " llevate agua y tennis que caminaras mucho";
+            bool isActive = (_showParks && eventID >= 1 && eventID <= 5) ||
+                            (_showMuseums && eventID >= 25 && eventID <= 28) ||
+                            (_showStatues && eventID >= 6 && eventID <= 15) ||
+                            (_showHistoric && eventID >= 16 && eventID <= 24) ||
+                            (_showObj && eventID >= 29 && eventID <= 29);
+            spawnedObject.SetActive(isActive);
+            anyActiveEvents |= isActive;
         }
+
+        if (!anyActiveEvents)
+        {
+            // Activar el panel
+            _panel.SetActive(true);
+        }
+        else if (_panel.activeSelf)
+        {
+            // Desactivar el panel si ya está activo
+            _panel.SetActive(false);
+        }
+
+        activeFilters = "";
+        if (_showParks)
+            activeFilters += "Parques, ";
+        if (_showMuseums)
+            activeFilters += "Museos, ";
+        if (_showStatues)
+            activeFilters += "estatuas, ";
+        if (_showHistoric)
+            activeFilters += "lugares historicos, ";
+        if (_showObj)
+            activeFilters += "";
+
+        // Remove the last comma and space
+        if (activeFilters.Length > 0)
+            activeFilters = activeFilters.Substring(0, activeFilters.Length - 2);
+
+        // Update the lugaresText UI Text component with the activeFilters variable
+        _lugares.text = "vas a visitar: " + activeFilters + " antes de comenzar la ruta asegurate de llevarte tennis y asegurate de llevarte agua";
     }
 
     public void DisableEventShow()

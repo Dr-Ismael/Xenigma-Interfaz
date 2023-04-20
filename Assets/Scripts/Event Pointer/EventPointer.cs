@@ -24,6 +24,7 @@ public class EventPointer : MonoBehaviour
     [SerializeField] Text _visit;
     [SerializeField] Text _visit2;
     [SerializeField] Text _cercano;
+    [SerializeField] Text _cercano2;
     
 
     LocationStatus playerLocation;
@@ -83,6 +84,7 @@ public class EventPointer : MonoBehaviour
             spawnable.GetComponent<EventPointer>()._visit = _visit;
             spawnable.GetComponent<EventPointer>()._visit2 = _visit2;
             spawnable.GetComponent<EventPointer>()._cercano = _cercano;
+            spawnable.GetComponent<EventPointer>()._cercano2 = _cercano2;
 
         }
     }
@@ -111,7 +113,9 @@ public class EventPointer : MonoBehaviour
         // Si se encontró un objeto cercano, establece su nombre en el Text _cercano
         if (closestSpawnable != null)
         {
-            _cercano.text = "tu primer destino es " +  closestSpawnable.GetComponent<EventPointer>().eventName;
+            float distanceToClosest = Vector3.Distance(transform.position, closestSpawnable.transform.position);
+            _cercano.text = "Tu primer destino es " + closestSpawnable.GetComponent<EventPointer>().eventName + ". Asegúrate de prepararte que caminarás " + distanceToClosest.ToString("F2") + " metros.";
+            _cercano2.text = " " +  closestSpawnable.GetComponent<EventPointer>().eventName;
         }
 
     }
