@@ -34,7 +34,7 @@ public class Ranking : MonoBehaviour
     void Start()
     {
 
-        connectionString = "Server=158.97.122.147;Port=3306;Database=unity;User=root;Password=;";
+        connectionString = "Server=sql3.freemysqlhosting.net;Port=3306;Database=sql3686159;User=sql3686159;Password=XYxplE7HS9;";
         MySqlConnection connection = new MySqlConnection(connectionString);
 
         try

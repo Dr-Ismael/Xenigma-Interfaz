@@ -49,7 +49,7 @@ public class CrearClan : MonoBehaviour
     private void Start()
     {
 
-        connectionString = "Server=158.97.122.147;Port=3306;Database=unity;User=root;Password=;";
+        connectionString = "Server=sql3.freemysqlhosting.net;Port=3306;Database=sql3686159;User=sql3686159;Password=XYxplE7HS9;";
         MySqlConnection connection = new MySqlConnection(connectionString);
 
         try
@@ -177,7 +177,7 @@ public class CrearClan : MonoBehaviour
 
     public void GuardarClan()
     {
-            string query = "insert into clanes (id, NombreClan, id_lider, puntajeClan) VALUES (null, '"+ NombreClanG +"', '"+ JalarId.resultadoID +"',0 );";
+            string query = "insert into clanes (NombreClan, id_lider, puntajeClan) VALUES ('"+ NombreClanG +"', '"+ JalarId.resultadoID +"', 0);";
 
             MS_Connection = new MySqlConnection(connectionString);
             MS_Connection.Open();
