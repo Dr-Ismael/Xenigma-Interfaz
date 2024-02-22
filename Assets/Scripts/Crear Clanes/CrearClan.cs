@@ -10,7 +10,6 @@ using UnityEngine.UI;
 
 public class CrearClan : MonoBehaviour
 {
-
     public InputField NombreClan_field;
 
     private string connectionString;
@@ -18,8 +17,6 @@ public class CrearClan : MonoBehaviour
     private MySqlConnection MS_Connection;
 
     private MySqlCommand MS_Comand;
-
-    
 
     private MySqlDataReader MS_Reader;
 
