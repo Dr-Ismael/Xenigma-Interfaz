@@ -138,12 +138,6 @@ public class Login : MonoBehaviour
             MenuPrincipal.SetActive(true);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void Displayajustes()
     {
         if(isajustes == true)

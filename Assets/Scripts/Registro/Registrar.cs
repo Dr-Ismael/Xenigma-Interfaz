@@ -267,7 +267,7 @@ public class Registrar : MonoBehaviour
         byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(password_bytes);
         string encoded_password = BitConverter.ToString(hash).Replace("-", string.Empty).ToLower();
 
-        string query = "INSERT INTO users(nombre,nickname,edad,email,password,idAvatar, puntajeUser) VALUES ('" + nombreG + "','" + nicknameG + "','" + edadG + "','" + emailG + "','" + encoded_password + "','" + idAvatarG + "',0); ";
+        string query = "INSERT INTO users(id,nombre,nickname,edad,email,password,idAvatar, puntajeUser) VALUES (null,'" + nombreG + "','" + nicknameG + "','" + edadG + "','" + emailG + "','" + encoded_password + "','" + idAvatarG + "',0); ";
 
         MS_Connection = new MySqlConnection(connectionString);
         MS_Connection.Open();

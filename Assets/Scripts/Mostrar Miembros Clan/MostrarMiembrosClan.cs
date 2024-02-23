@@ -134,6 +134,7 @@ public class MostrarMiembrosClan : MonoBehaviour
         MS_Connection.Close();
         
         Debug.Log("Usuario agregado correctamente" + "Datos del Registrado" + "Nombre:"+ " " + NombreG + " " + "Nickname:"+ " " + NicknameG + "Edad:"+ " " + EdadG + "ID Lider:"+ " " + JalarId.resultadoID + "ID Clan:"+ " " + TomarIDClan.resultadoIDClan + "ID Avatar:"+ " " + idAvatarMiembroG);
+        
 
         EscogerAvatar.SetActive(false);
         PagMiembros.SetActive(true);
