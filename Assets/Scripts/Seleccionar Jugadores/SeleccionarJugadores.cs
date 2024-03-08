@@ -41,7 +41,7 @@ public class SeleccionarJugadores : MonoBehaviour
 
     void Start()
     {
-        connectionString = "Server=sql3.freemysqlhosting.net;Port=3306;Database=sql3686159;User=sql3686159;Password=XYxplE7HS9;";
+        connectionString = "Server=localhost;Port=3306;Database=Xenigmabd;User=XenigmaJuego;Password=OHfoUIt[gt7uHWJS;";
         MySqlConnection connection = new MySqlConnection(connectionString);
 
         try

@@ -49,31 +49,37 @@ public class SpawnOnMap : MonoBehaviour
         _spawnedObjects = new List<GameObject>();
         var options = new List<Dropdown.OptionData>();
 
-        LoadSpawnedObjects(); 
+        //LoadSpawnedObjects();
 
-        for (var i = 0; i < _locationStrings.Length; i++)
-        {
-            var locationString = _locationStrings[i];
+        // Inicializar los objetos y las ubicaciones
+        for (int i = 0; i < _locationStrings.Length; i++)
+       {
+           var locationString = _locationStrings[i];
             _locations[i] = Conversions.StringToLatLon(locationString);
             var instance = Instantiate(_markerPrefab);
-            instance.GetComponent<EventPointer>().eventPos = _locations[i];
-            instance.GetComponent<EventPointer>().eventID = i + 1;
-            instance.GetComponent<EventPointer>().eventName = GetObjectName(i + 1);
-            instance.GetComponent<EventPointer>().eventDescription = GetObjectDescription(i + 1);
-            instance.transform.localPosition = _map.GeoToWorldPosition(_locations[i], true);
-            instance.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
-            _spawnedObjects.Add(instance);
+           // Configurar los componentes del objeto
+           instance.GetComponent<EventPointer>().eventPos = _locations[i];
+           instance.GetComponent<EventPointer>().eventID = i + 1;
+           instance.GetComponent<EventPointer>().eventName = GetObjectName(i + 1);
+           instance.GetComponent<EventPointer>().eventDescription = GetObjectDescription(i + 1);
+           instance.transform.localPosition = _map.GeoToWorldPosition(_locations[i], true);
+           instance.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
+           _spawnedObjects.Add(instance);
 
-            options.Add(new Dropdown.OptionData(GetObjectName(i + 1)));
-        }
+           options.Add(new Dropdown.OptionData(GetObjectName(i + 1)));
+       }
 
-         _dropdown.ClearOptions();
-        _dropdown.AddOptions(options);
-        _dropdown.onValueChanged.AddListener(OnDropdownValueChanged);
-        _dropdown2.onValueChanged.AddListener(DropdownValue);
-        _dropdown2.ClearOptions();
-        _dropdown2.AddOptions(options);
+       // Configurar las opciones del primer Dropdown
+       _dropdown.ClearOptions();
+       _dropdown.AddOptions(options);
+       _dropdown.onValueChanged.AddListener(OnDropdownValueChanged);
+
+       // Configurar las opciones del segundo Dropdown
+       _dropdown2.ClearOptions();
+       _dropdown2.AddOptions(options);
+       _dropdown2.onValueChanged.AddListener(DropdownValue);
     }
+
 
      private void SaveSpawnedObjects()
     {
@@ -95,31 +101,43 @@ public class SpawnOnMap : MonoBehaviour
         PlayerPrefs.SetString(SpawnedObjectsKey, serializedData);
     }
 
-    private void LoadSpawnedObjects()
+private void LoadSpawnedObjects()
+{
+    // Verificar si hay datos guardados en PlayerPrefs bajo la clave SpawnedObjectsKey
+    if (PlayerPrefs.HasKey(SpawnedObjectsKey))
     {
-        if (PlayerPrefs.HasKey(SpawnedObjectsKey))
+        // Obtener los datos serializados de PlayerPrefs
+        var serializedData = PlayerPrefs.GetString(SpawnedObjectsKey);
+
+        // Dividir los datos en una matriz de cadenas usando el delimitador ';'
+        var spawnedObjectsData = serializedData.Split(';');
+
+        // Recorrer cada dato de objeto
+        foreach (var data in spawnedObjectsData)
         {
-            var serializedData = PlayerPrefs.GetString(SpawnedObjectsKey);
-            var spawnedObjectsData = serializedData.Split(';');
+            // Dividir los datos del objeto en partes: posición, rotación y escala
+            var parts = data.Split('|');
+            var positionParts = parts[0].Split(',');
+            var rotationParts = parts[1].Split(',');
+            var scaleParts = parts[2].Split(',');
 
-            foreach (var data in spawnedObjectsData)
-            {
-                var parts = data.Split('|');
-                var positionParts = parts[0].Split(',');
-                var rotationParts = parts[1].Split(',');
-                var scaleParts = parts[2].Split(',');
+            // Convertir las partes en vectores y cuaterniones
+            var position = new Vector3(float.Parse(positionParts[0]), float.Parse(positionParts[1]), float.Parse(positionParts[2]));
+            var rotation = new Quaternion(float.Parse(rotationParts[0]), float.Parse(rotationParts[1]), float.Parse(rotationParts[2]), float.Parse(rotationParts[3]));
+            var scale = new Vector3(float.Parse(scaleParts[0]), float.Parse(scaleParts[1]), float.Parse(scaleParts[2]));
 
-                var position = new Vector3(float.Parse(positionParts[0]), float.Parse(positionParts[1]), float.Parse(positionParts[2]));
-                var rotation = new Quaternion(float.Parse(rotationParts[0]), float.Parse(rotationParts[1]), float.Parse(rotationParts[2]), float.Parse(rotationParts[3]));
-                var scale = new Vector3(float.Parse(scaleParts[0]), float.Parse(scaleParts[1]), float.Parse(scaleParts[2]));
+            // Instanciar el objeto en la escena con los datos obtenidos
+            var spawnedObject = Instantiate(_markerPrefab, position, rotation, transform);
 
-                var spawnedObject = Instantiate(_markerPrefab, position, rotation, transform);
-                spawnedObject.transform.localScale = scale;
+            // Establecer la escala del objeto
+            spawnedObject.transform.localScale = scale;
 
-                _spawnedObjects.Add(spawnedObject);
-            }
+            // Agregar el objeto instanciado a la lista de objetos generados
+            _spawnedObjects.Add(spawnedObject);
         }
     }
+}
+
 
     private void OnDestroy()
     {
@@ -395,46 +413,71 @@ public class SpawnOnMap : MonoBehaviour
     }
 
     public void EventShow()
+{
+    // Verificar si los arrays están nulos o tienen longitudes diferentes
+    if (_spawnedObjects == null || _locations == null || _spawnedObjects.Count != _locations.Length)
     {
-        int count = _spawnedObjects.Count;
-        for (int i = 0; i < count; i++)
-        {
-            var spawnedObject = _spawnedObjects[i];
-            var location = _locations[i];
-            spawnedObject.transform.localPosition = _map.GeoToWorldPosition(location, false);
-            spawnedObject.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
-
-            // Aplicar los filtros de acuerdo al eventoID
-            var eventID = spawnedObject.GetComponent<EventPointer>().eventID;
-            spawnedObject.SetActive(
-                (_showParks && eventID >= 1 && eventID <= 5) ||
-                (_showMuseums && eventID >= 25 && eventID <= 28) ||
-                (_showStatues && eventID >= 6 && eventID <= 15) ||
-                (_showHistoric && eventID >= 16 && eventID <= 24) ||
-                (_showObj && eventID >= 29 && eventID <= 29)
-                
-
-            );
-                activeFilters = "";
-            if (_showParks)
-                activeFilters += "Parques, ";
-            if (_showMuseums)
-                activeFilters += "Museos, ";
-            if (_showStatues)
-                activeFilters += "estatuas, ";
-            if (_showHistoric)
-                activeFilters += "lugares historicos, ";
-            if (_showObj)
-                activeFilters += "";
-
-            // Remove the last comma and space
-            if (activeFilters.Length > 0)
-                activeFilters = activeFilters.Substring(0, activeFilters.Length - 2);
-
-            // Update the lugaresText UI Text component with the activeFilters variable
-            _lugares.text = "vas a visitar: " + activeFilters + " llevate agua y tennis que caminaras mucho";
-        }
+        Debug.LogError("Los arrays _spawnedObjects y _locations son nulos o tienen longitudes diferentes.");
+        return;
     }
+
+    int count = _spawnedObjects.Count;
+    for (int i = 0; i < count; i++)
+    {
+        // Verificar si el índice está dentro de los límites del arreglo _spawnedObjects
+        if (i >= _spawnedObjects.Count)
+        {
+            Debug.LogError("Index out of range: " + i);
+            continue;
+        }
+
+        // Verificar si el índice está dentro de los límites del arreglo _locations
+        if (i >= _locations.Length)
+        {
+            Debug.LogError("No hay ubicación válida para el objeto spawnado en la posición " + i + ".");
+            continue;
+        }
+
+        var spawnedObject = _spawnedObjects[i];
+        var location = _locations[i];
+        spawnedObject.transform.localPosition = _map.GeoToWorldPosition(location, false);
+        spawnedObject.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
+
+        // Aplicar los filtros de acuerdo al eventoID
+        var eventID = spawnedObject.GetComponent<EventPointer>().eventID;
+        spawnedObject.SetActive(
+            (_showParks && eventID >= 1 && eventID <= 5) ||
+            (_showMuseums && eventID >= 25 && eventID <= 28) ||
+            (_showStatues && eventID >= 6 && eventID <= 15) ||
+            (_showHistoric && eventID >= 16 && eventID <= 24) ||
+            (_showObj && eventID == 29)
+        );
+
+        // Construir la cadena de filtros activos
+        StringBuilder activeFiltersBuilder = new StringBuilder();
+
+        if (_showParks)
+            activeFiltersBuilder.Append("Parques, ");
+        if (_showMuseums)
+            activeFiltersBuilder.Append("Museos, ");
+        if (_showStatues)
+            activeFiltersBuilder.Append("Estatuas, ");
+        if (_showHistoric)
+            activeFiltersBuilder.Append("Lugares históricos, ");
+        if (_showObj)
+            activeFiltersBuilder.Append("");
+
+        // Eliminar la última coma y espacio de la cadena de filtros activos
+        if (activeFiltersBuilder.Length > 0)
+            activeFiltersBuilder.Length -= 2;
+
+        string activeFilters = activeFiltersBuilder.ToString();
+
+        // Actualizar el texto mostrando los filtros activos
+        _lugares.text = "Vas a visitar: " + activeFilters + ". Llevate agua y tennis porque caminarás mucho.";
+    }
+}
+
 
     public void DisableEventShow()
     {
