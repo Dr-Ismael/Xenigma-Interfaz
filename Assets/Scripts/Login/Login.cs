@@ -39,13 +39,15 @@ public class Login : MonoBehaviour
 
     bool isajustes;
 
-
+     public TextMeshProUGUI txtError;
 
 
     private void Start()
     {
         connectionString = "Server=localhost;Port=3306;Database=Xenigmabd;User=XenigmaJuego;Password=OHfoUIt[gt7uHWJS;";
         MySqlConnection connection = new MySqlConnection(connectionString);
+          
+        txtError.gameObject.SetActive(false);
 
         try
         {
@@ -110,13 +112,14 @@ public class Login : MonoBehaviour
                 NicknameInput.text = resultadoNickname;
                 pagBienvenida.SetActive(true);
                 StartCoroutine(apagar());
+                txtError.gameObject.SetActive(false);
 
                 Debug.Log("Sesión Iniciada con exito, Bienvenido " + " " + resultadoNickname);
             }
             else
             {
                 Debug.Log("El usuario o contraseña son incorrectos");
-
+                txtError.gameObject.SetActive(true);
             }
         }
 
