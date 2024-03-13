@@ -133,7 +133,7 @@ public class SeleccionarJugadores : MonoBehaviour
             toggle.onValueChanged.AddListener(delegate { OnToggleValueChanged(miembro, toggle); });
 
             // aumenta el valor de posY en el espaciado deseado
-            posY -= 35.8f;
+            posY -= 210f;
         }
     }
 

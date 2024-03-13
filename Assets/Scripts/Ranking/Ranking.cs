@@ -104,7 +104,7 @@ public class Ranking : MonoBehaviour
         {
             GameObject miembroObject = Instantiate(miembroPrefab, miembrosContenedor);
 
-            // ajusta la posici�n Y del objeto utilizando la variable posY
+            // ajusta la posicion Y del objeto utilizando la variable posY
             RectTransform rt = miembroObject.GetComponent<RectTransform>();
             rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, posY);
 
@@ -118,7 +118,7 @@ public class Ranking : MonoBehaviour
             puntajeText.text = miembro.puntajeMiembro.ToString();
 
             // aumenta el valor de posY en el espaciado deseado
-            posY -= 35.8f;
+            posY -= 210f;
         }
     }
 
@@ -180,7 +180,7 @@ public class Ranking : MonoBehaviour
             edadText.text = miembro.puntajeClan.ToString();
 
             // aumenta el valor de posY en el espaciado deseado
-            posY -= 35.8f;
+            posY -= 210f;
         }
     }
 
@@ -199,7 +199,7 @@ public class Ranking : MonoBehaviour
     {
         Rankingpag.SetActive(true);
         PagPrincipal.SetActive(false);
-        PintarMayorPuntajeClanes();
+        PintarMayorPuntajeMiembrosClanes();
     }
 
     public void RegresarMenu()

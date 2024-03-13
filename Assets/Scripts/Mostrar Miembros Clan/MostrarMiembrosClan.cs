@@ -278,7 +278,7 @@ public class MostrarMiembrosClan : MonoBehaviour
             eliminarButton.onClick.AddListener(() => eliminar(miembro.id));
 
             // aumenta el valor de posY en el espaciado deseado
-            posY -= 35.8f;
+            posY -= 210f;
         }
     }
 
