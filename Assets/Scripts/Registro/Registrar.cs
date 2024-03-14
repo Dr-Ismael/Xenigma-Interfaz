@@ -67,7 +67,7 @@ public class Registrar : MonoBehaviour
             connection.Close();
         }
 
-        IrAlInicio();
+        //IrAlInicio();
         
     }
 
@@ -313,6 +313,8 @@ public class Registrar : MonoBehaviour
         {
             Debug.Log("Imagen seleccionada: " + imagenSeleccionada.ID);
 
+            //Temporalmente se usara este debido a un bug al seleccionar la imagen
+            //idAvatarG = 2;
             idAvatarG = imagenSeleccionada.ID;
         }
         else

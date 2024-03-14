@@ -4,48 +4,30 @@ using UnityEngine.UI;
 
 public class CambiarEscena : MonoBehaviour
 {
-    public Canvas cvDesct;
-    public Canvas cvAct;
+    //public Canvas cvDesct;
+    //public Canvas cvAct;
+    private string emailDEV = "luis@gmail.com";
+    private string passDEV = "Aa@11111";
+
+    // Referencias a los InputFields en el canvas
+    public InputField emailInputField;
+    public InputField passInputField;
 
     // Permite cambiar a la escena escrita en el inspector de Unity
-    public void Cambiar(string escena, string cvDesactivar, string cvActivar)
+    public void Cambiar(string escena)
     {
         SceneManager.LoadScene(escena);
-
-        // Comprueba si se deben cambiar los canvas
-        if (cvDesactivar != null && cvActivar != null)
-        {
-            CambiarCanvas(cvDesactivar, cvActivar);
-        }
     }
 
-    // Permite cambiar el canvas activo recibiendo de parámetros el canvas a desactivar y el canvas a activar
-    public void CambiarCanvas(string cvDescStr, string cvActStr)
+    //Permite iniciar sesion rapidamente (para desarrolladores)
+    public void devLogin()
     {
-        GameObject canvasDescGO = GameObject.Find(cvDescStr);
-        if (canvasDescGO != null)
-        {
-            cvDesct = canvasDescGO.GetComponent<Canvas>();
-        }
-        else
-        {
-            Debug.LogError("No se pudo encontrar el Canvas con el nombre: " + cvDescStr);
-            return;
-        }
+        // Aquí se asignan los valores a las variables emailDEV y passDEV al inputfield
+        emailInputField.text = emailDEV;
+        passInputField.text = passDEV;
 
-        GameObject canvasActGO = GameObject.Find(cvActStr);
-        if (canvasActGO != null)
-        {
-            cvAct = canvasActGO.GetComponent<Canvas>();
-        }
-        else
-        {
-            Debug.LogError("No se pudo encontrar el Canvas con el nombre: " + cvActStr);
-            return;
-        }
-
-        // Desactiva el canvas a desactivar y activa el canvas a activar
-        cvDesct.enabled = false;
-        cvAct.enabled = true;
+        // Puedes imprimir las variables para verificar si se asignaron correctamente
+        Debug.Log("Email: " + emailInputField.text);
+        Debug.Log("Contraseña: " + passInputField.text);
     }
 }
