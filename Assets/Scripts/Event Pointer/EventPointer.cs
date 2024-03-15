@@ -111,7 +111,7 @@ public class EventPointer : MonoBehaviour
         // Si se encontró un objeto cercano, establece su nombre en el Text _cercano
         if (closestSpawnable != null)
         {
-            _cercano.text = "tu primer destino es " +  closestSpawnable.GetComponent<EventPointer>().eventName;
+            _cercano.text = "Tu primer destino es " +  closestSpawnable.GetComponent<EventPointer>().eventName;
         }
 
     }
@@ -139,31 +139,31 @@ public class EventPointer : MonoBehaviour
         _description2.text = eventDescription;
         
         if (randomNum == 0) {
-            ValSeguridad = "medio";
-            Valdificultad = "facil";
+            ValSeguridad = "Medio";
+            Valdificultad = "Facil";
             VisitasClanes = "5";
         } else if (randomNum == 1) {
-            Valdificultad = "medio";
-            ValSeguridad = "dificil";
+            Valdificultad = "Medio";
+            ValSeguridad = "Dificil";
             VisitasClanes = "10";
         } else {
-            Valdificultad = "dificil";
-            ValSeguridad = "facil";
+            Valdificultad = "Dificil";
+            ValSeguridad = "Facil";
             VisitasClanes = "15";
         }
-        _dificultad2.text = "Dificultad: " + Valdificultad;
-        _seguridad2.text = "Seguridad: " + ValSeguridad;
-        _visit2.text = "visitado por " + VisitasClanes + " clanes";
+        _dificultad2.text = "" + Valdificultad;
+        _seguridad2.text = "" + ValSeguridad;
+        _visit2.text = "" + VisitasClanes + " clanes";
 
     }
     else
     {
         menuUIManager.DiplayStartEventPanel();
         _description.text = eventDescription;
-        _dificultad.text = "Difilcutad: media";
+        _dificultad.text = "Media";
         _name.text = eventName;
-        _seguridad.text = "Seguridad: Baja";
-        _visit.text = "visitado por " + VisitasClanes + " clanes";
+        _seguridad.text = "Baja";
+        _visit.text = "" + VisitasClanes + "";
 
         // Crea un objeto StringBuilder
         StringBuilder sb = new StringBuilder();
