@@ -394,7 +394,7 @@ public class SpawnOnMap : MonoBehaviour
                 objectDescripcion = "Cecupi";
                 break;
             case 24:
-                objectDescripcion = "la Unidad de Transferencia Tecnológica Tepic del Centro de Investigación Científica y de Educación Superior de Ensenada (CICESE-UT3). Realizamos investigación aplicada en el área de las Tecnologías de la Información y Comunicación (TIC), y generamos desarrollos tecnológicos.";
+                objectDescripcion = "Esta es la Unidad de Transferencia Tecnológica Tepic del Centro de Investigación Científica y de Educación Superior de Ensenada (CICESE-UT3). Realizamos investigación aplicada en el área de las Tecnologías de la Información y Comunicación (TIC), y generamos desarrollos tecnológicos.";
                 break;
             case 25:
                 objectDescripcion = "Centro de arte contemporaneo Emilia Ortiz";
@@ -485,7 +485,7 @@ public class SpawnOnMap : MonoBehaviour
             string activeFilters = activeFiltersBuilder.ToString();
 
             // Actualizar el texto mostrando los filtros activos
-            _lugares.text = "Vas a visitar: " + activeFilters + ". Llevate agua y tennis porque caminarás mucho.";
+            _lugares.text = "Vas a visitar: " + activeFilters + ".\n\n Antes de comenzar la ruta, asegúrate de llevarte tennis y suficiente agua.";
         }
     }
 
