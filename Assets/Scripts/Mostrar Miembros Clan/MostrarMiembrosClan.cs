@@ -8,9 +8,12 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Data;
+
+
 public class MostrarMiembrosClan : MonoBehaviour
 {
-    
+    public TextMeshProUGUI nombre_Clan, CambiarNombre_TXT, NombreCambiado_TXT;
 
     public InputField Nombre_field, nickname_field, edad_field;
     private string connectionString;
@@ -28,7 +31,6 @@ public class MostrarMiembrosClan : MonoBehaviour
 
     public TMP_Text RegistroText;
     
-
     [SerializeField] GameObject RegisMiembrosClan;
     [SerializeField] GameObject EscogerAvatar;
     [SerializeField] GameObject PagPrincipal;
@@ -42,11 +44,6 @@ public class MostrarMiembrosClan : MonoBehaviour
 
     public GameObject miembroPrefab;
     public Transform miembrosContenedor;
-    
-
-
-
-  
     
     void Start()
     {
@@ -68,6 +65,114 @@ public class MostrarMiembrosClan : MonoBehaviour
         }
 
 
+    }
+
+    public void ShowClanData()
+    {
+        //Consulta el nombre del clan con el id del clan
+        string queryData = "SELECT NombreClan FROM clanes WHERE id = '" + TomarIDClan.resultadoIDClan + "'";
+
+        //Abre una nueva conexion
+        MS_Connection = new MySqlConnection(connectionString);
+        MS_Connection.Open();
+        try
+        {
+            MySqlCommand MS_Command = new MySqlCommand(queryData, MS_Connection);
+            object result = MS_Command.ExecuteScalar();
+            //Si el resultado de la consulta no es null, entonces muestra el nombre dle clan
+            if (result != null)
+            {
+                nombre_Clan.text = result.ToString();
+            }
+            else
+            {
+                //De lo contrario manada un mensaje donde dice que no lo encontro
+                Debug.Log("No se encontró ningún clan con el ID especificado.");
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error al ejecutar la consulta: " + e.Message);
+        }
+        finally
+        {
+            if (MS_Connection.State == ConnectionState.Open)
+            {
+                MS_Connection.Close();
+            }
+        }
+    }
+
+    public void PintarInputNombreClan()
+    {
+       //Consulta el nombre del clan con el id del clan
+        string queryData = "SELECT NombreClan FROM clanes WHERE id = '" + TomarIDClan.resultadoIDClan + "'";
+
+        //Abre una nueva conexion
+        MS_Connection = new MySqlConnection(connectionString);
+        MS_Connection.Open();
+        try
+        {
+            MySqlCommand MS_Command = new MySqlCommand(queryData, MS_Connection);
+            object result = MS_Command.ExecuteScalar();
+            //Si el resultado de la consulta no es null, entonces muestra el nombre dle clan
+            if (result != null)
+            {
+                CambiarNombre_TXT.text = result.ToString();
+            }
+            else
+            {
+                //De lo contrario manada un mensaje donde dice que no lo encontro
+                Debug.Log("No se encontró ningún clan con el ID especificado.");
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error al ejecutar la consulta: " + e.Message);
+        }
+        finally
+        {
+            if (MS_Connection.State == ConnectionState.Open)
+            {
+                MS_Connection.Close();
+            }
+        }
+    }
+
+    public void CambiarNombreClan()
+    {
+    //Consulta para actualizar el nombre del clan con el id del clan
+    string queryData = "UPDATE clanes SET NombreClan = '" + NombreCambiado_TXT.text + "' WHERE id = '" + TomarIDClan.resultadoIDClan + "'";
+
+    //Abre una nueva conexión
+    MS_Connection = new MySqlConnection(connectionString);
+    MS_Connection.Open();
+    try
+    {
+        MySqlCommand MS_Command = new MySqlCommand(queryData, MS_Connection);
+        int rowsAffected = MS_Command.ExecuteNonQuery();
+        ShowClanData();
+        //Comprueba si se actualizaron filas
+        if (rowsAffected > 0)
+        {
+            Debug.Log("Nombre del clan actualizado correctamente.");
+        }
+        else
+        {
+            Debug.Log("No se encontró ningún clan con el ID especificado.");
+        }
+    }
+    catch (Exception e)
+    {
+        Debug.LogError("Error al ejecutar la consulta: " + e.Message);
+    }
+    finally
+    {
+        if (MS_Connection.State == ConnectionState.Open)
+        {
+            MS_Connection.Close();
+        }
+    }
     }
 
     public void GuardarMiembros()
@@ -101,7 +206,6 @@ public class MostrarMiembrosClan : MonoBehaviour
                 NombreG = Nombre_field.text;
                 EdadG = edad_field.text;
 
-                
                 RegisMiembrosClan.SetActive(false);
                 EscogerAvatar.SetActive(true);
             }
@@ -222,6 +326,7 @@ public class MostrarMiembrosClan : MonoBehaviour
         }
         MS_Reader.Close();
 
+        ShowClanData();
         string query2 = "SELECT * FROM miembros_clanes where idClan = '" + TomarIDClan.resultadoIDClan + "';";
         MS_Connection = new MySqlConnection(connectionString);
         MS_Connection.Open();
@@ -278,7 +383,7 @@ public class MostrarMiembrosClan : MonoBehaviour
             eliminarButton.onClick.AddListener(() => eliminar(miembro.id));
 
             // aumenta el valor de posY en el espaciado deseado
-            posY -= 210f;
+            posY -= 180f;
         }
     }
 

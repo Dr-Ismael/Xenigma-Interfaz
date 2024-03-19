@@ -86,7 +86,7 @@ public class Ranking : MonoBehaviour
             GuardarDatosMiembrosRanking.Add(nuevoDato);
         }
         MS_Reader.Close();
-
+                    Debug.Log("Si llega aqui");
         MostrarMayorPuntajeMiembrosClanes();
     }
 
@@ -178,7 +178,6 @@ public class Ranking : MonoBehaviour
 
             TextMeshProUGUI edadText = miembroObject.transform.Find("PuntajeClan").GetComponent<TextMeshProUGUI>();
             edadText.text = miembro.puntajeClan.ToString();
-
             // aumenta el valor de posY en el espaciado deseado
             posY -= 210f;
         }
@@ -199,7 +198,7 @@ public class Ranking : MonoBehaviour
     {
         Rankingpag.SetActive(true);
         PagPrincipal.SetActive(false);
-        PintarMayorPuntajeMiembrosClanes();
+        PintarMayorPuntajeClanes();
     }
 
     public void RegresarMenu()
