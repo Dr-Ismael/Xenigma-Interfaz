@@ -16,7 +16,7 @@ public class Registrar : MonoBehaviour
 {
     public string password_regex;
 
-    public TMP_Text pass_mayuculas, pass_minusculas, pass_digito, pass_especial_caracter, pass_8letras, pass_confirm;
+    public TMP_Text pass_mayuculas, pass_minusculas, pass_digito, pass_especial_caracter, pass_8letras, pass_confirm, userBirthday, userGender;
 
     private string connectionString;
 
@@ -24,7 +24,7 @@ public class Registrar : MonoBehaviour
 
     private MySqlCommand MS_Comand;
 
-    public InputField nombre_field, nickname_field, edad_field, email_field, password_field, passwordConfirm_field;
+    public InputField nombre_field, nickname_field, email_field, password_field, passwordConfirm_field;
 
     private MySqlDataReader MS_Reader;
 
@@ -45,6 +45,7 @@ public class Registrar : MonoBehaviour
     private string emailG;
     private string passwordG;
     public int idAvatarG;
+    public string birthdaryG;
     private string resultado;
     public TMP_Text RespuestaText;
 
@@ -184,7 +185,7 @@ public class Registrar : MonoBehaviour
             password_confirm_valid = false;
         }
 
-        if (nombre_field == true && nickname_field == true && edad_field == true && email_valid == true && password_valid == true && password_confirm_valid == true)
+        if (nombre_field == true && nickname_field == true && userBirthday == true && email_valid == true && password_valid == true && password_confirm_valid == true)
         {
             
             emailG = email_field.text;
@@ -214,9 +215,10 @@ public class Registrar : MonoBehaviour
                 passwordG = password_field.text;
                 nombreG = nombre_field.text;
                 nicknameG = nickname_field.text;
-                edadG = edad_field.text;
+                edadG = userBirthday.text;
+                birthdaryG = userGender.text;
 
-                Debug.Log(emailG + " " + passwordG + " " + nombreG + " " + nicknameG + " " + edadG);
+                Debug.Log(emailG + " " + passwordG + " " + nombreG + " " + nicknameG + " " + edadG + " " + birthdaryG);
 
                 MenuAvatar.SetActive(true);
                 MenuRegistro.SetActive(false);
@@ -249,13 +251,15 @@ public class Registrar : MonoBehaviour
         nombreG = "";
         edadG = "";
         nicknameG = "";
+        birthdaryG = "";
 
         email_field.text = emailG;
         password_field.text = passwordG;
-        edad_field.text = edadG;
+        userBirthday.text = birthdaryG;
         nickname_field.text = nicknameG;
         nombre_field.text = nombreG;
         passwordConfirm_field.text = passwordG;
+        userGender.text = birthdaryG;
 
     }
 
@@ -267,7 +271,7 @@ public class Registrar : MonoBehaviour
         byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(password_bytes);
         string encoded_password = BitConverter.ToString(hash).Replace("-", string.Empty).ToLower();
 
-        string query = "INSERT INTO users(id,nombre,nickname,edad,email,password,idAvatar, puntajeUser) VALUES (null,'" + nombreG + "','" + nicknameG + "','" + edadG + "','" + emailG + "','" + encoded_password + "','" + idAvatarG + "',0); ";
+        string query = "INSERT INTO users(id, nombre, nickname, edad, email, password, idAvatar, puntajeUser, genero) VALUES (null, '" + nombreG + "', '" + nicknameG + "', '" + edadG + "', '" + emailG + "', '" + encoded_password + "', '" + idAvatarG + "', 0, '" + birthdaryG + "');";
 
         MS_Connection = new MySqlConnection(connectionString);
         MS_Connection.Open();
