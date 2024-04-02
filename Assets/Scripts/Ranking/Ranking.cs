@@ -28,8 +28,8 @@ public class Ranking : MonoBehaviour
     public GameObject clanPrefab;
     public Transform miembrosContenedor;
 
-    public GameObject[] BotonesClan;
-    public GameObject[] BotonesMiembros;
+    public GameObject BotonesClan;
+    public GameObject BotonesMiembros;
 
     void Start()
     {
@@ -58,12 +58,8 @@ public class Ranking : MonoBehaviour
     {
         BorrarContenedores();
 
-        for (int i = 0; i < BotonesMiembros.Length; i++)
-        {
-            BotonesMiembros[i].SetActive(true);
-            BotonesClan[i].SetActive(false);
-        }
-
+        BotonesMiembros.SetActive(true);
+        BotonesClan.SetActive(false);
 
         //Consulta para acomodar de mayor a menor los miembros del clan en el ranking de puntuacion
         string query = "SELECT * FROM miembros_clanes ORDER BY puntaje DESC;";
@@ -126,11 +122,8 @@ public class Ranking : MonoBehaviour
     {
         BorrarContenedores();
 
-        for (int i = 0; i < BotonesClan.Length; i++)
-        {
-            BotonesMiembros[i].SetActive(false);
-            BotonesClan[i].SetActive(true);
-        }
+        BotonesMiembros.SetActive(false);
+        BotonesClan.SetActive(true);
 
         //Consulta para acomodar de mayor a menor los clanes en el ranking de puntuacion
         string query = "SELECT * FROM clanes ORDER BY puntajeClan DESC;;";
