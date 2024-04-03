@@ -16,6 +16,8 @@ public class MostrarMiembrosClan : MonoBehaviour
     public TextMeshProUGUI nombre_Clan, CambiarNombre_TXT, NombreCambiado_TXT;
 
     public InputField Nombre_field, nickname_field, edad_field;
+    public TextMeshProUGUI edadTxt;
+    public TMP_Dropdown dropNewMemberYears;
     private string connectionString;
 
     private MySqlConnection MS_Connection;
@@ -24,12 +26,14 @@ public class MostrarMiembrosClan : MonoBehaviour
 
     private MySqlDataReader MS_Reader;
 
-    private string resultadoNombres, resultadoNickname, NombreG, NicknameG, EdadG;
+    private string resultadoNombres, resultadoNickname, NombreG, NicknameG, EdadG, generoG;
     public Login JalarId;
 
     public CrearClan TomarIDClan;
 
     public TMP_Text RegistroText;
+
+    public TextMeshProUGUI generoTXT;
     
     [SerializeField] GameObject RegisMiembrosClan;
     [SerializeField] GameObject EscogerAvatar;
@@ -44,6 +48,8 @@ public class MostrarMiembrosClan : MonoBehaviour
 
     public GameObject miembroPrefab;
     public Transform miembrosContenedor;
+
+    public GameObject subMenu,subMenuMiembros, subMenuInfo, subMenuEdit, subMenuGenero, subMenuAvatar;
     
     void Start()
     {
@@ -64,7 +70,7 @@ public class MostrarMiembrosClan : MonoBehaviour
             connection.Close();
         }
 
-
+        
     }
 
     public void ShowClanData()
@@ -177,10 +183,10 @@ public class MostrarMiembrosClan : MonoBehaviour
 
     public void GuardarMiembros()
     {
-        if (Nombre_field == true && nickname_field == true && edad_field == true)
+        if (Nombre_field == true && nickname_field == true && edadTxt == true)
         {
-
             NicknameG = nickname_field.text;
+            generoG = generoTXT.text;
 
             string query = "SELECT * FROM users where nickname = '" + NicknameG + "';";
 
@@ -204,7 +210,8 @@ public class MostrarMiembrosClan : MonoBehaviour
             else
             {
                 NombreG = Nombre_field.text;
-                EdadG = edad_field.text;
+                EdadG = edadTxt.text;
+                generoG = generoTXT.text;
 
                 RegisMiembrosClan.SetActive(false);
                 EscogerAvatar.SetActive(true);
@@ -219,7 +226,7 @@ public class MostrarMiembrosClan : MonoBehaviour
     public void AgregarMiembros()
     {
         
-        string query = "INSERT INTO `miembros_clanes` (`id_miembro`, `nombre`, `nickname`, `edad`, `idLider`, `idClan`, `idAvatar`, `puntaje`) VALUES (NULL, '" + NombreG + "', '" + NicknameG + "', '" + EdadG + "', '" + JalarId.resultadoID + "', '" + TomarIDClan.resultadoIDClan + "', '" + idAvatarMiembroG + "', 0);";
+        string query = "INSERT INTO `miembros_clanes` (`id_miembro`, `nombre`, `nickname`, `edad`, `idLider`, `idClan`, `idAvatar`, `puntaje`, `genero` ) VALUES (NULL, '" + NombreG + "', '" + NicknameG + "', '" + EdadG + "', '" + JalarId.resultadoID + "', '" + TomarIDClan.resultadoIDClan + "', '" + idAvatarMiembroG + "', 0, '" + generoG + "');";
 
         MS_Connection = new MySqlConnection(connectionString);
         MS_Connection.Open();
@@ -279,26 +286,25 @@ public class MostrarMiembrosClan : MonoBehaviour
         BorrarDatos();
         RegisMiembrosClan.SetActive(true);
         PagMiembros.SetActive(false);
+        agregarAniosDropDownMembers();
     }
 
     private void LimpiarRegisMiembro()
     {
         nickname_field.text = "";
         Nombre_field.text = "";
-        edad_field.text = "";
-
-
+        generoTXT.text = "No seleccionado";
 
         nickname_field.text = NicknameG;
         Nombre_field.text = NombreG;
-        edad_field.text = EdadG;
+        generoTXT.text = generoG;
     }
 
     private void BorrarDatos()
     {
         nickname_field.text = "";
         Nombre_field.text = "";
-        edad_field.text = "";
+        generoTXT.text = "No seleccionado";
     }
 
     public void RegresaRegisMiembroAvatar()
@@ -344,6 +350,7 @@ public class MostrarMiembrosClan : MonoBehaviour
             nuevoDato.nombre = nombre;
             nuevoDato.nickname = nickname;
             nuevoDato.edad = edad;
+            //nuevoDato.genero = genero;
             GuardarDatosMiembros.Add(nuevoDato);
         }
         MS_Reader.Close();
@@ -381,6 +388,14 @@ public class MostrarMiembrosClan : MonoBehaviour
             // Agrega un botón "Eliminar" para cada miembro que llama a la función eliminar() con el ID del miembro correspondiente
             Button eliminarButton = miembroObject.transform.Find("EliminarBTN").GetComponent<Button>();
             eliminarButton.onClick.AddListener(() => eliminar(miembro.id));
+
+            // Agrego el boton de información del miembro
+            Button infoButton = miembroObject.transform.Find("InfoBtn").GetComponent<Button>();
+            infoButton.onClick.AddListener(() => cargarInfoMiembro(miembro.id));
+
+            //Agrego el edicion del miembro
+            Button editButton = miembroObject.transform.Find("ModificarBTN").GetComponent<Button>();
+            editButton  .onClick.AddListener(() => mostrarEditarMiembro(miembro.id));
 
             // aumenta el valor de posY en el espaciado deseado
             posY -= 180f;
@@ -429,6 +444,97 @@ public class MostrarMiembrosClan : MonoBehaviour
         BorrarContenedores();
         PagMiembros.SetActive(false);
         PagPrincipal.SetActive(true);
+        subMenu.SetActive(false);
+        subMenuEdit.SetActive(false);
+        subMenuInfo.SetActive(false);
+        subMenuMiembros.SetActive(false);
+        subMenuGenero.SetActive(false);
+        subMenuAvatar.SetActive(false);
+    }
+
+    //Función que permite visualizar la info del miembro seleccionado
+    public void cargarInfoMiembro(int idMiembro)
+    {
+        string queryInfo = "Select * from miembros_clanes WHERE id_miembro = '" + idMiembro + "';";
+
+        MS_Connection = new MySqlConnection(connectionString);
+        MS_Connection.Open();
+
+        try
+        {
+            MS_Comand = new MySqlCommand(queryInfo, MS_Connection);
+            MS_Comand.ExecuteNonQuery();
+            Debug.Log(queryInfo);
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+        }
+        MS_Connection.Close();
+
+        subMenu.SetActive(true);
+        subMenuMiembros.SetActive(true);
+        subMenuInfo.SetActive(true);
+
+        // Elimina el miembro de la lista
+        //GuardarDatosMiembros miembroEliminado = GuardarDatosMiembros.Find(x => x.id == idMiembro);
+        //GuardarDatosMiembros.Remove(miembroEliminado);
+
+        // Vuelve a mostrar la lista actualizada
+        Mostrar();
+    }
+
+    //Función que permite visualizar la pantalla para editar el miembro seleccionado
+    public void mostrarEditarMiembro(int idMiembro)
+    {
+        string queryInfo = "Select * from miembros_clanes WHERE id_miembro = '" + idMiembro + "';";
+
+        MS_Connection = new MySqlConnection(connectionString);
+        MS_Connection.Open();
+
+        try
+        {
+            MS_Comand = new MySqlCommand(queryInfo, MS_Connection);
+            MS_Comand.ExecuteNonQuery();
+            Debug.Log(queryInfo);
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+        }
+        MS_Connection.Close();
+
+        subMenu.SetActive(true);
+        subMenuMiembros.SetActive(true);
+        subMenuEdit.SetActive(true);
+
+        // Elimina el miembro de la lista
+        //GuardarDatosMiembros miembroEliminado = GuardarDatosMiembros.Find(x => x.id == idMiembro);
+        //GuardarDatosMiembros.Remove(miembroEliminado);
+
+        // Vuelve a mostrar la lista actualizada
+        Mostrar();
+    }
+    
+    public void agregarAniosDropDownMembers()
+    {
+       // Limpia las opciones actuales del Dropdown
+       dropNewMemberYears.ClearOptions();
+
+      // Crea una lista para almacenar las opciones
+      List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
+
+      // Agrega las opciones al Dropdown, del 1 al 99
+      for (int number = 0; number <= 100; number++)
+      {
+          options.Add(new TMP_Dropdown.OptionData(number.ToString()));
+      }
+ 
+      // Establece las opciones en el Dropdown
+      dropNewMemberYears.options = options;
+
+     // Para que el Dropdown muestre la opción seleccionada correctamente
+    dropNewMemberYears.RefreshShownValue();
     }
 
 }
@@ -439,6 +545,7 @@ public class MostrarMiembrosClan : MonoBehaviour
     public string nombre;
     public string nickname;
     public int edad;
+    public string genero;
 }
 
 

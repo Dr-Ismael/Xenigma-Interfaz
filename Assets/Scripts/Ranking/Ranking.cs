@@ -28,12 +28,13 @@ public class Ranking : MonoBehaviour
     public GameObject clanPrefab;
     public Transform miembrosContenedor;
 
+    //Objetos para desactivar y activar botones de clanes y miembros en el ranking
     public GameObject BotonesClan;
     public GameObject BotonesMiembros;
 
     void Start()
     {
-
+        //Inicio de la conexión a la base de datos de la aplicacion
         connectionString = "Server=localhost;Port=3306;Database=Xenigmabd;User=XenigmaJuego;Password=OHfoUIt[gt7uHWJS;";
         MySqlConnection connection = new MySqlConnection(connectionString);
 
