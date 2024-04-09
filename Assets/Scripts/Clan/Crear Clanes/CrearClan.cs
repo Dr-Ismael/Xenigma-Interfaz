@@ -177,7 +177,7 @@ public class CrearClan : MonoBehaviour
 
     public void GuardarClan()
     {
-            string query = "insert into clanes (id, NombreClan, id_lider, puntajeClan) VALUES (null,'"+ NombreClanG +"', '"+ JalarId.resultadoID +"', 0);";
+            string query = "insert into clanes (id, NombreClan, id_lider, puntajeClan, lugaresClan, medallasClan, objetosClan, distanciaClan) VALUES (null,'"+ NombreClanG +"', '"+ JalarId.resultadoID +"', 0,0,0,0,0);";
 
             MS_Connection = new MySqlConnection(connectionString);
             MS_Connection.Open();

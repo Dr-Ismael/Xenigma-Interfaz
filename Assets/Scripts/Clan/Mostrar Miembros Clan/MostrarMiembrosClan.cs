@@ -242,7 +242,7 @@ public class MostrarMiembrosClan : MonoBehaviour
     public void AgregarMiembros()
     {
 
-        string query = "INSERT INTO `miembros_clanes` (`id_miembro`, `nombre`, `nickname`, `edad`, `idLider`, `idClan`, `idAvatar`, `puntaje`, `genero` ) VALUES (NULL, '" + NombreG + "', '" + NicknameG + "', '" + EdadG + "', '" + JalarId.resultadoID + "', '" + TomarIDClan.resultadoIDClan + "', '" + idAvatarMiembroG + "', 0, '" + generoG + "');";
+        string query = "INSERT INTO `miembros_clanes` (`id_miembro`, `nombre`, `nickname`, `edad`, `idLider`, `idClan`, `idAvatar`, `puntaje`, `genero`, `lugares`,`hrs`,`medallas`,`coleccionables`,`distancia` ) VALUES (NULL, '" + NombreG + "', '" + NicknameG + "', '" + EdadG + "', '" + JalarId.resultadoID + "', '" + TomarIDClan.resultadoIDClan + "', '" + idAvatarMiembroG + "', 0, '" + generoG + "',0,0,0,0,0);";
 
         MS_Connection = new MySqlConnection(connectionString);
         MS_Connection.Open();

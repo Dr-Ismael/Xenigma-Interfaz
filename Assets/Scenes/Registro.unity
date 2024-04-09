@@ -307,7 +307,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 248, y: -80}
+  m_AnchoredPosition: {x: 96, y: -80}
   m_SizeDelta: {x: 152, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &11698025
@@ -3717,6 +3717,7 @@ MonoBehaviour:
   txtNewEditMemberNickname: {fileID: 1868480541}
   txtNewEditMemberEdad: {fileID: 1313150846}
   pnlErrorEditar: {fileID: 687450236}
+  infoMemberImage: {fileID: 0}
   ObjetosListado:
   - Image: {fileID: 1950505617}
     ID: 1
@@ -11550,7 +11551,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 456105082}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 143429143}
+        m_TargetAssemblyTypeName: Ranking, Assembly-CSharp
+        m_MethodName: recuperarMedallasClanes
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &456105082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13470,7 +13483,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 96, y: -80}
+  m_AnchoredPosition: {x: 248, y: -80}
   m_SizeDelta: {x: 152, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &510081861
@@ -13516,7 +13529,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 510081862}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 143429143}
+        m_TargetAssemblyTypeName: Ranking, Assembly-CSharp
+        m_MethodName: recuperarLugaresMiembros
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &510081862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13637,7 +13662,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 512217230}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 143429143}
+        m_TargetAssemblyTypeName: Ranking, Assembly-CSharp
+        m_MethodName: recuperarColeccionablesClanes
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &512217230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18806,7 +18843,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 730997593}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 143429143}
+        m_TargetAssemblyTypeName: Ranking, Assembly-CSharp
+        m_MethodName: recuperarColeccionablesMiembros
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &730997593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29820,7 +29869,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1326781661}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 143429143}
+        m_TargetAssemblyTypeName: Ranking, Assembly-CSharp
+        m_MethodName: recuperarDistanciaClanes
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1326781661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35118,7 +35179,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1540112431}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 143429143}
+        m_TargetAssemblyTypeName: Ranking, Assembly-CSharp
+        m_MethodName: recuperarDistanciaMiembros
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1540112431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36115,7 +36188,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 248, y: -80}
+  m_AnchoredPosition: {x: 96, y: -80}
   m_SizeDelta: {x: 152, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1573428330
@@ -42654,7 +42727,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1852723359}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 143429143}
+        m_TargetAssemblyTypeName: Ranking, Assembly-CSharp
+        m_MethodName: recuperarMedallasMiembros
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1852723359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44314,7 +44399,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1908709071
 RectTransform:
   m_ObjectHideFlags: 0
@@ -47994,7 +48079,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 96, y: -80}
+  m_AnchoredPosition: {x: 248, y: -80}
   m_SizeDelta: {x: 152, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2045056195
@@ -48040,7 +48125,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2045056196}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 143429143}
+        m_TargetAssemblyTypeName: Ranking, Assembly-CSharp
+        m_MethodName: recuperarLugaresClanes
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2045056196
 MonoBehaviour:
   m_ObjectHideFlags: 0
