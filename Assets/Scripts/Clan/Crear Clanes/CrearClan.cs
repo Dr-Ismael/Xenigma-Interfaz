@@ -187,13 +187,16 @@ public class CrearClan : MonoBehaviour
             MS_Reader = MS_Comand.ExecuteReader();
 
             Debug.Log("Registro exitoso");
+
+            //Muestra la pantalla de miembros del clan
+            RegisClan.SetActive(false);
+            PantallaClan.SetActive(true);
     }
 
     public void regresarPagPrincipal()
     {
         RegisClan.SetActive(false);
         RegisMiembrosClan.SetActive(false);
-        PantallaClan.SetActive(true);
         MenuPrincipal.SetActive(true);
         
     }
