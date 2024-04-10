@@ -50,6 +50,9 @@ public class MostrarMiembrosClan : MonoBehaviour
 
     public GameObject subMenu, subMenuMiembros, subMenuInfo, subMenuEdit, subMenuGenero, subMenuAvatar;
 
+    //Variables para mostrar los datos en los campos de informacion del clan
+    public TextMeshProUGUI txtInfoClanName, txtLugaresClan, txtHrsClan, txtMedallasClan, txtPuntosClan, txtMiembrosClan, txtColeccionablesClan;
+
     //Variables de los campos para mostrar la informacion del usuario.
     public Image imgMiembro;
     public TextMeshProUGUI txtMemberName, txtMemberPlaces, txtMemberHours, txtMemberMedals, txtMemberPoints, txtMemberColeccionables;
@@ -159,6 +162,38 @@ public class MostrarMiembrosClan : MonoBehaviour
                 MS_Connection.Close();
             }
         }
+    }
+
+    public void mostarInfoClan()
+    {
+        string queryInfo = "SELECT NombreClan, lugaresClan, hrsClan, medallasClan, puntajeClan, miembros, objetosClan FROM clanes WHERE id = '" + TomarIDClan.resultadoIDClan + "';";
+
+        MS_Connection = new MySqlConnection(connectionString);
+        MS_Connection.Open();
+
+        MS_Comand = new MySqlCommand(queryInfo, MS_Connection);
+
+        MS_Reader = MS_Comand.ExecuteReader();
+        while (MS_Reader.Read())
+        {
+            // Recupera los datos del usuario y asígnalos a variables
+            string nombre = MS_Reader.GetString(0);
+            int lugares = MS_Reader.GetInt32(1);
+            int hrs = MS_Reader.GetInt32(2);
+            int medallas = MS_Reader.GetInt32(3);
+            int puntos = MS_Reader.GetInt32(4);
+            int miembros = MS_Reader.GetInt32(5);
+            int coleccionables = MS_Reader.GetInt32(6);
+
+            txtInfoClanName.text = nombre;
+            txtLugaresClan.text = "" + lugares;
+            txtHrsClan.text = "" + hrs;
+            txtMedallasClan.text = "" + medallas;
+            txtPuntosClan.text = "" + puntos;
+            txtMiembrosClan.text = "" + miembros;
+            txtColeccionablesClan.text = "" + coleccionables;
+        }
+        MS_Reader.Close();
     }
 
     public void CambiarNombreClan()
@@ -346,7 +381,6 @@ public class MostrarMiembrosClan : MonoBehaviour
 
         MS_Comand = new MySqlCommand(query, MS_Connection);
 
-        Debug.Log("pasa por aqui");
         MS_Reader = MS_Comand.ExecuteReader();
         while (MS_Reader.Read())
         {
@@ -544,7 +578,9 @@ public class MostrarMiembrosClan : MonoBehaviour
             int edad = MS_Reader.GetInt32(2);
 
             txtEditMemberName.text = nombre;
+            txtNewEditMemberName.text = nombre;
             txtEditMemberNickname.text = nickname;
+            txtNewEditMemberNickname.text = nickname;
             nombreEditMember = nombre;
             nicknameEditMember = nickname;
 
@@ -609,6 +645,7 @@ public class MostrarMiembrosClan : MonoBehaviour
                "WHERE `id_miembro` = '" + idEditMember + "';";
 
         Debug.Log("Nuevos datos: Nombre " + nombreEditMember + ", Edad " + txtNewEditMemberEdad.text + ", Nickname " + nicknameEditMember + ", Avatar " + idAvatarMiembroG + ", Genero " + generoElegido);
+
         //Recarga la lista de miembros
         BorrarContenedores();
 
@@ -620,8 +657,8 @@ public class MostrarMiembrosClan : MonoBehaviour
         idAvatarMiembroG = 0;
         nombreEditMember = "";
         nicknameEditMember = "";
-        txtNewEditMemberName.text = "";
-        txtNewEditMemberNickname.text = "";
+        txtNewEditMemberName.text = ""+nombreEditMember;
+        txtNewEditMemberNickname.text = ""+nicknameEditMember;
         pnlErrorEditar.gameObject.SetActive(false);
 
         //Abre una nueva conexión
