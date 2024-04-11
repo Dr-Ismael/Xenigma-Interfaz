@@ -104,6 +104,7 @@ public class Login : MonoBehaviour
                 resultadoPassword = MS_Reader.GetString(5);
                 resultadoNickname = MS_Reader.GetString(3);
                 resultadoID = MS_Reader.GetString(0);
+                PlayerPrefs.SetString("idUser", resultadoID);
 
                 Debug.Log(resultadoID + " " + resultadoUser + " " + resultadoPassword);
             }
