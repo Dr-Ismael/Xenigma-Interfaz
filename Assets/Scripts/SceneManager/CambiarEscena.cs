@@ -13,6 +13,15 @@ public class CambiarEscena : MonoBehaviour
     public InputField emailInputField;
     public InputField passInputField;
 
+    public GameObject Inicio, MenuPrincipal;
+
+    public void Start()
+    {
+        DontDestroyOnLoad(gameObject);
+        Inicio = GameObject.Find("Inicio");
+        MenuPrincipal = GameObject.Find("pagPrincipal");
+    }
+
     // Permite cambiar a la escena escrita en el inspector de Unity
     public void Cambiar(string escena)
     {
@@ -30,4 +39,11 @@ public class CambiarEscena : MonoBehaviour
         Debug.Log("Email: " + emailInputField.text);
         Debug.Log("Contraseña: " + passInputField.text);
     }
+
+    public void regresarMenuPrincipal()
+    {
+        Inicio.SetActive(false);
+        MenuPrincipal.SetActive(true);
+    }
 }
+

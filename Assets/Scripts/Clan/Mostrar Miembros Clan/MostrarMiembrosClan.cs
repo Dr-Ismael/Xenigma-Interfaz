@@ -529,19 +529,20 @@ public class MostrarMiembrosClan : MonoBehaviour
             int medallas = MS_Reader.GetInt32(3);
             int puntos = MS_Reader.GetInt32(4);
             int idAvatar = MS_Reader.GetInt32(5);
-            int coleccionables = MS_Reader.GetInt32(5);
+            int coleccionables = MS_Reader.GetInt32(6); // Corregido el índice
 
-            //Lista imagenSeleccionada = ObjetosListado.Find(imagen => imagen.ID == idAvatar);
-            /*
+            // Busca la imagen correspondiente en la lista de objetos
+            Lista imagenSeleccionada = ObjetosListado.Find(imagen => imagen.ID == idAvatar);
+
             if (imagenSeleccionada != null)
             {
                 Debug.Log("Avatar del miembro: " + imagenSeleccionada.ID);
-                infoMemberImage.sprite = imagenSeleccionada.AvatarSprite; // Asumiendo que AvatarSprite es el nombre correcto de la propiedad.
+                infoMemberImage.sprite = imagenSeleccionada.Image.sprite; // Asigna el sprite de la imagen seleccionada a infoMemberImage
             }
             else
             {
                 Debug.Log("No se encontró la imagen seleccionada");
-            }*/
+            }
 
             txtMemberName.text = nombre;
             txtMemberHours.text = "" + hrs;
@@ -657,8 +658,8 @@ public class MostrarMiembrosClan : MonoBehaviour
         idAvatarMiembroG = 0;
         nombreEditMember = "";
         nicknameEditMember = "";
-        txtNewEditMemberName.text = ""+nombreEditMember;
-        txtNewEditMemberNickname.text = ""+nicknameEditMember;
+        txtNewEditMemberName.text = "" + nombreEditMember;
+        txtNewEditMemberNickname.text = "" + nicknameEditMember;
         pnlErrorEditar.gameObject.SetActive(false);
 
         //Abre una nueva conexión

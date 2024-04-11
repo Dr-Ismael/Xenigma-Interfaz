@@ -10,8 +10,6 @@ using UnityEngine.UI;
 
 public class Login : MonoBehaviour
 {
-    
-
     private string connectionString;
 
     private MySqlConnection MS_Connection;

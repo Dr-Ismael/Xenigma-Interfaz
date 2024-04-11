@@ -36,8 +36,6 @@ public class CrearClan : MonoBehaviour
     public string resultadoIDClan;
 
     public string TengoElIDClan;
-
-
     private string NombreClanG;
     public Login JalarId;
 

@@ -36,7 +36,7 @@ public class SeleccionarJugadores : MonoBehaviour
 
     string idSeleccionados;
 
-
+    public List<Lista> ObjetosListado = new List<Lista>();
 
 
     void Start()
@@ -62,7 +62,7 @@ public class SeleccionarJugadores : MonoBehaviour
 
         Pintar();
     }
-    
+
     public void Pintar()
     {
         string query = "SELECT COUNT(*) FROM miembros_clanes WHERE idClan = '" + TomarIDClan.resultadoIDClan + "';";
@@ -98,11 +98,13 @@ public class SeleccionarJugadores : MonoBehaviour
             string nombre = MS_Reader.GetString(1);
             string nickname = MS_Reader.GetString(2);
             int edad = MS_Reader.GetInt32(3);
+            int idAvatar = MS_Reader.GetInt32(6);
             MostrarMiembros nuevoDato = new MostrarMiembros();
             nuevoDato.id = id;
             nuevoDato.nombre = nombre;
             nuevoDato.nickname = nickname;
             nuevoDato.edad = edad;
+            nuevoDato.idAvatar = idAvatar;
             MostrarMiembros.Add(nuevoDato);
         }
         MS_Reader.Close();
@@ -127,6 +129,21 @@ public class SeleccionarJugadores : MonoBehaviour
 
             TextMeshProUGUI nicknameText = miembroObject.transform.Find("Nickname").GetComponent<TextMeshProUGUI>();
             nicknameText.text = miembro.nickname;
+
+            Image avatarMember = miembroObject.transform.Find("ImgAvatar").GetComponent<Image>();
+            
+            // Busca la imagen correspondiente en la lista de objetos
+            Lista avatar = ObjetosListado.Find(imagen => imagen.ID == miembro.idAvatar);
+
+            if (avatar != null)
+            {
+                Debug.Log("Avatar del miembro: " + avatar.ID);
+                avatarMember.sprite = avatar.Image.sprite; // Asigna el sprite de la imagen seleccionada a avatarMember
+            }
+            else
+            {
+                Debug.Log("No se encontró la imagen seleccionada");
+            }
 
             // obtener el componente Toggle y agregar un listener para el evento onValueChanged
             Toggle toggle = miembroObject.transform.Find("Toggle").GetComponent<Toggle>();
@@ -200,11 +217,20 @@ public class SeleccionarJugadores : MonoBehaviour
     }
 }
 
-[System.Serializable] public class MostrarMiembros
+[System.Serializable]
+public class MostrarMiembros
 {
     public int id;
     public string nombre;
     public string nickname;
     public int edad;
     public bool toggleEstado;
+
+    public int idAvatar;
 }
+/*
+class Avatares
+{
+    public Image Image;
+    public int ID;
+}*/

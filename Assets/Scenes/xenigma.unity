@@ -4275,6 +4275,7 @@ GameObject:
   m_Component:
   - component: {fileID: 424066954}
   - component: {fileID: 424066955}
+  - component: {fileID: 424066956}
   m_Layer: 0
   m_Name: SceneManager
   m_TagString: Untagged
@@ -4311,6 +4312,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   emailInputField: {fileID: 0}
   passInputField: {fileID: 0}
+  Inicio: {fileID: 0}
+  MenuPrincipal: {fileID: 0}
+--- !u!114 &424066956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 424066953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1084844948b43b8448ed235a9ab238eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cambiarEscena: {fileID: 424066955}
 --- !u!1 &437352225
 GameObject:
   m_ObjectHideFlags: 0

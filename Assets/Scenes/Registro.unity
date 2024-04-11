@@ -3724,7 +3724,7 @@ MonoBehaviour:
   txtNewEditMemberNickname: {fileID: 1868480541}
   txtNewEditMemberEdad: {fileID: 1313150846}
   pnlErrorEditar: {fileID: 687450236}
-  infoMemberImage: {fileID: 0}
+  infoMemberImage: {fileID: 1013925040}
   ObjetosListado:
   - Image: {fileID: 1950505617}
     ID: 1
@@ -3760,6 +3760,23 @@ MonoBehaviour:
   TomarIDClan: {fileID: 143429140}
   PagPrincipal: {fileID: 1566220379}
   MiembrosJuego: {fileID: 84378149}
+  ObjetosListado:
+  - Image: {fileID: 1950505617}
+    ID: 1
+  - Image: {fileID: 1474198465}
+    ID: 2
+  - Image: {fileID: 610257291}
+    ID: 3
+  - Image: {fileID: 252901566}
+    ID: 4
+  - Image: {fileID: 316934322}
+    ID: 5
+  - Image: {fileID: 16100423}
+    ID: 6
+  - Image: {fileID: 1707027125}
+    ID: 7
+  - Image: {fileID: 1205629303}
+    ID: 8
 --- !u!114 &143429143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20614,6 +20631,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   emailInputField: {fileID: 501872246}
   passInputField: {fileID: 1024399329}
+  Inicio: {fileID: 366646709}
+  MenuPrincipal: {fileID: 1566220379}
 --- !u!114 &789230061
 MonoBehaviour:
   m_ObjectHideFlags: 0
