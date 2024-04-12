@@ -36,8 +36,6 @@ public class Login : MonoBehaviour
     private string resultadoNickname;
     public string resultadoID;
 
-    bool isajustes;
-
     //Variable que permite mostrar error si te equivocaste al poner el correo o contraseña
     public TextMeshProUGUI txtError;
 
@@ -149,23 +147,6 @@ public class Login : MonoBehaviour
             MenuPrincipal.SetActive(true);
     }
 
-    public void Displayajustes()
-    {
-        if(isajustes == true)
-        {
-            ajustes.SetActive(true);
-            isajustes = false; 
-            MenuPrincipal.SetActive(false); 
-        }
-        else
-        {
-            ajustes.SetActive(false); 
-            isajustes = true;
-            MenuPrincipal.SetActive(true); 
-                
-        }
-    }
- 
     //Permite a un nuevo usuario registrarse y logearse sin volver a la pantalla de inicio
     public void logearseAlRegistro()
     {
