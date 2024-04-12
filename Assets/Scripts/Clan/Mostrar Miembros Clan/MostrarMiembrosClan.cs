@@ -278,6 +278,7 @@ public class MostrarMiembrosClan : MonoBehaviour
     {
 
         string query = "INSERT INTO `miembros_clanes` (`id_miembro`, `nombre`, `nickname`, `edad`, `idLider`, `idClan`, `idAvatar`, `puntaje`, `genero`, `lugares`,`hrs`,`medallas`,`coleccionables`,`distancia` ) VALUES (NULL, '" + NombreG + "', '" + NicknameG + "', '" + EdadG + "', '" + JalarId.resultadoID + "', '" + TomarIDClan.resultadoIDClan + "', '" + idAvatarMiembroG + "', 0, '" + generoG + "',0,0,0,0,0);";
+        sumarMiembro();
 
         MS_Connection = new MySqlConnection(connectionString);
         MS_Connection.Open();
@@ -296,7 +297,7 @@ public class MostrarMiembrosClan : MonoBehaviour
         MS_Connection.Close();
 
         Debug.Log("Usuario agregado correctamente" + "Datos del Registrado" + "Nombre:" + " " + NombreG + " " + "Nickname:" + " " + NicknameG + "Edad:" + " " + EdadG + "ID Lider:" + " " + JalarId.resultadoID + "ID Clan:" + " " + TomarIDClan.resultadoIDClan + "ID Avatar:" + " " + idAvatarMiembroG);
-
+    
 
         EscogerAvatar.SetActive(false);
         PagMiembros.SetActive(true);
@@ -461,6 +462,7 @@ public class MostrarMiembrosClan : MonoBehaviour
     public void eliminar(int idMiembro)
     {
         string query = "DELETE FROM miembros_clanes WHERE id_miembro = '" + idMiembro + "';";
+        restarMiembro();
 
         MS_Connection = new MySqlConnection(connectionString);
         MS_Connection.Open();
@@ -683,6 +685,98 @@ public class MostrarMiembrosClan : MonoBehaviour
         }
 
         Pintar();
+    }
+
+    public void sumarMiembro()
+    {
+        string idLider = PlayerPrefs.GetString("idUser");
+        Debug.Log("id del lider a sumar" + idLider);
+        int miembros=0;
+        string query = "Select miembros FROM clanes WHERE id_lider = '" + idLider + "';";
+
+        MS_Connection = new MySqlConnection(connectionString);
+        MS_Connection.Open();
+
+        MS_Comand = new MySqlCommand(query, MS_Connection);
+
+        MS_Reader = MS_Comand.ExecuteReader();
+        while (MS_Reader.Read())
+        {
+            // Recupera los datos del usuario y asígnalos a variables
+            miembros = MS_Reader.GetInt32(0);
+
+            miembros++;
+            Debug.Log("Nueva cantidad de miembros: "+miembros);
+        }
+        MS_Reader.Close();
+
+        string queryUpdate = "UPDATE `clanes` SET `miembros` = " + miembros + " WHERE `id_lider` = " + idLider + ";";
+
+        //Abre una nueva conexión
+        MS_Connection = new MySqlConnection(connectionString);
+        MS_Connection.Open();
+        try
+        {
+            MySqlCommand MS_Command = new MySqlCommand(queryUpdate, MS_Connection);
+            int rowsAffected = MS_Command.ExecuteNonQuery();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error al ejecutar la consulta: " + e.Message);
+        }
+        finally
+        {
+            if (MS_Connection.State == ConnectionState.Open)
+            {
+                MS_Connection.Close();
+            }
+        }
+    }
+
+    public void restarMiembro()
+    {
+        string idLider = PlayerPrefs.GetString("idUser");
+        Debug.Log("id del lider a restar" + idLider);
+        int miembros=0;
+        string query = "Select miembros FROM clanes WHERE id_lider = '" + idLider + "';";
+
+        MS_Connection = new MySqlConnection(connectionString);
+        MS_Connection.Open();
+
+        MS_Comand = new MySqlCommand(query, MS_Connection);
+
+        MS_Reader = MS_Comand.ExecuteReader();
+        while (MS_Reader.Read())
+        {
+            // Recupera los datos del usuario y asígnalos a variables
+            miembros = MS_Reader.GetInt32(0);
+
+            miembros--;
+            Debug.Log("Nueva cantidad de miembros: "+miembros);
+        }
+        MS_Reader.Close();
+
+        string queryUpdate = "UPDATE `clanes` SET `miembros` = " + miembros + " WHERE `id_lider` = " + idLider + ";";
+
+        //Abre una nueva conexión
+        MS_Connection = new MySqlConnection(connectionString);
+        MS_Connection.Open();
+        try
+        {
+            MySqlCommand MS_Command = new MySqlCommand(queryUpdate, MS_Connection);
+            int rowsAffected = MS_Command.ExecuteNonQuery();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error al ejecutar la consulta: " + e.Message);
+        }
+        finally
+        {
+            if (MS_Connection.State == ConnectionState.Open)
+            {
+                MS_Connection.Close();
+            }
+        }
     }
 
 
