@@ -25,6 +25,7 @@ public class Login : MonoBehaviour
     [SerializeField] public GameObject MenuPrincipal;
     [SerializeField] public GameObject ajustes;
     [SerializeField] public GameObject PagAvatar;
+    [SerializeField] public GameObject pagInicio;
 
     public TMP_Text NicknameInput;
 
@@ -50,7 +51,7 @@ public class Login : MonoBehaviour
     {
         connectionString = "Server=localhost;Port=3306;Database=Xenigmabd;User=XenigmaJuego;Password=OHfoUIt[gt7uHWJS;";
         MySqlConnection connection = new MySqlConnection(connectionString);
-          
+
         txtError.gameObject.SetActive(false);
         BtnIniciarRegistro.gameObject.SetActive(false);
 
@@ -67,7 +68,25 @@ public class Login : MonoBehaviour
         {
             connection.Close();
         }
+    }
 
+    public void Awake()
+    {
+        int userLogeado = PlayerPrefs.GetInt("userLogeado");
+        //Comprueba si el usuario esta logeado para reLogearlo
+        if (userLogeado == 1)
+        {
+            PlayerPrefs.SetInt("salidaSegura", 0);
+            int salidaSegura = PlayerPrefs.GetInt("salidaSegura");
+
+            if (salidaSegura == 0)
+            {
+             emailG = PlayerPrefs.GetString("userEmail");
+             passwordG = PlayerPrefs.GetString("userPass");
+             Debug.Log("Awake email " + email_field.text + " pass " + password_field.text);
+             reLogearse();
+            }
+        }
     }
 
     public void logearse()
@@ -81,6 +100,11 @@ public class Login : MonoBehaviour
         {
             emailG = email_field.text;
             passwordG = password_field.text;
+
+            PlayerPrefs.SetString("userEmail", emailG);
+            PlayerPrefs.SetString("userPass", passwordG);
+
+            guardarLogeo();
 
             byte[] password_bytes = new UTF8Encoding().GetBytes(passwordG);
             byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(password_bytes);
@@ -103,6 +127,7 @@ public class Login : MonoBehaviour
                 resultadoNickname = MS_Reader.GetString(3);
                 resultadoID = MS_Reader.GetString(0);
                 PlayerPrefs.SetString("idUser", resultadoID);
+                guardarLogeo();
 
                 Debug.Log(resultadoID + " " + resultadoUser + " " + resultadoPassword);
             }
@@ -128,8 +153,93 @@ public class Login : MonoBehaviour
                 txtError.gameObject.SetActive(true);
             }
         }
+    }
 
-        
+    public void reLogearse()
+    {
+
+        connectionString = "Server=localhost;Port=3306;Database=Xenigmabd;User=XenigmaJuego;Password=OHfoUIt[gt7uHWJS;";
+        MySqlConnection connection = new MySqlConnection(connectionString);
+
+        txtError.gameObject.SetActive(false);
+        BtnIniciarRegistro.gameObject.SetActive(false);
+
+        try
+        {
+            connection.Open();
+            Console.WriteLine("Conexión exitosa");
+        }
+        catch (MySqlException ex)
+        {
+            Console.WriteLine("Error en la conexión: " + ex.Message);
+        }
+        finally
+        {
+            connection.Close();
+        }
+
+        byte[] password_bytes = new UTF8Encoding().GetBytes(passwordG);
+        byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(password_bytes);
+        string encoded_password = BitConverter.ToString(hash).Replace("-", string.Empty).ToLower();
+
+        Debug.Log(encoded_password);
+
+        string query = "SELECT * FROM users where email = '" + emailG + "' and password = '" + encoded_password + "';";
+        Debug.Log(query);
+
+        MS_Connection = new MySqlConnection(connectionString);
+        MS_Connection.Open();
+
+        MS_Comand = new MySqlCommand(query, MS_Connection);
+        MS_Reader = MS_Comand.ExecuteReader();
+        while (MS_Reader.Read())
+        {
+            resultadoUser = MS_Reader.GetString(1);
+            resultadoPassword = MS_Reader.GetString(5);
+            resultadoNickname = MS_Reader.GetString(3);
+            resultadoID = MS_Reader.GetString(0);
+            PlayerPrefs.SetString("idUser", resultadoID);
+            guardarLogeo();
+
+            Debug.Log(resultadoID + " " + resultadoUser + " " + resultadoPassword);
+        }
+
+        MS_Reader.Close();
+
+        if (resultadoUser == emailG && resultadoPassword == encoded_password)
+        {
+            // Guardar el ID de usuario en PlayerPrefs
+            PlayerPrefs.SetString("IDUsuario", resultadoID);
+
+            MenuLogin.SetActive(false);
+            NicknameInput.text = resultadoNickname;
+            pagBienvenida.SetActive(true);
+            StartCoroutine(apagar());
+            txtError.gameObject.SetActive(false);
+            pagInicio.SetActive(false);
+
+            Debug.Log("Sesión Iniciada con exito, Bienvenido " + " " + resultadoNickname);
+        }
+        else
+        {
+            Debug.Log("El usuario o contraseña son incorrectos");
+            txtError.gameObject.SetActive(true);
+        }
+    }
+
+    public void guardarLogeo()
+    {
+        PlayerPrefs.SetInt("userLogeado", 1);
+    }
+
+    public void eliminarLogeo()
+    {
+        PlayerPrefs.SetInt("userLogeado", 0);
+    }
+
+    public void marcarSalida()
+    {
+        PlayerPrefs.SetInt("salidaSegura", 1);
     }
 
     public void HacerTrampa()
@@ -142,9 +252,9 @@ public class Login : MonoBehaviour
 
     IEnumerator apagar()
     {
-            yield return new WaitForSeconds(3f);
-            pagBienvenida.SetActive(false);
-            MenuPrincipal.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        pagBienvenida.SetActive(false);
+        MenuPrincipal.SetActive(true);
     }
 
     //Permite a un nuevo usuario registrarse y logearse sin volver a la pantalla de inicio
@@ -180,6 +290,7 @@ public class Login : MonoBehaviour
                 resultadoNickname = MS_Reader.GetString(3);
                 resultadoID = MS_Reader.GetString(0);
                 PlayerPrefs.SetString("idUser", resultadoID);
+                guardarLogeo();
 
                 Debug.Log(resultadoID + " " + resultadoUser + " " + resultadoPassword);
             }
@@ -204,6 +315,6 @@ public class Login : MonoBehaviour
             }
         }
 
-        
+
     }
 }

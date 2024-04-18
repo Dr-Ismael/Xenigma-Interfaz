@@ -72,7 +72,6 @@ public class Registrar : MonoBehaviour
         
     }
 
-
     public void email_check()
     {
         Match match = Regex.Match(email_field.text, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");

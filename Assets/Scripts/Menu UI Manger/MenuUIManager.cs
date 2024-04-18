@@ -46,12 +46,6 @@ public class MenuUIManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void DiplayStartEventPanel()
     {
         if(isUIPanelActive == false && isUILogroActivate == false && isUIAjustesActivate==false)
