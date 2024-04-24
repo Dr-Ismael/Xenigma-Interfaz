@@ -21,7 +21,7 @@ public class ItemsControl : MonoBehaviour
 [System.Serializable]
 public class ListaColeccionables
 {
-    public Sprite imgColeccionable;
+    public Image imgColeccionable;
     public int IDColeccionable;
     public byte active;
 }
@@ -29,7 +29,7 @@ public class ListaColeccionables
 
 public class ListaMedallas
 {
-    public Sprite imgMedalla;
+    public Image imgMedalla;
     public int IDMedalla;
     public byte active;
 }
