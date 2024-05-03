@@ -11,6 +11,7 @@ using TMPro;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 using UnityEditor;
+using System.Globalization;
 
 public class Registrar : MonoBehaviour
 {
@@ -102,8 +103,6 @@ public class Registrar : MonoBehaviour
             password_field.image.color = Color.red;
 
         }
-
-
 
         //Mayusculas
         if (Regex.IsMatch(password_field.text, @"(?=.*?[A-Z])"))
@@ -214,7 +213,30 @@ public class Registrar : MonoBehaviour
                 passwordG = password_field.text;
                 nombreG = nombre_field.text;
                 nicknameG = nickname_field.text;
-                edadG = userBirthday.text;
+                // Recibir la fecha de nacimiento en formato "día/mes/año" o "mes/día/año"
+                string fechaNacimientoString = userBirthday.text;
+
+                DateTime fechaNacimiento;
+
+                // Intentar analizar la fecha con el primer formato "día/mes/año"
+                if (DateTime.TryParseExact(fechaNacimientoString, "d/M/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaNacimiento))
+                {
+                    // Formatear la fecha de nacimiento en el formato "año-mes-día"
+                    edadG = fechaNacimiento.ToString("yyyy-MM-dd");
+                }
+                // Si no se pudo analizar con el primer formato, intentar con el segundo formato "mes/día/año"
+                else if (DateTime.TryParseExact(fechaNacimientoString, "M/d/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaNacimiento))
+                {
+                    // Formatear la fecha de nacimiento en el formato "año-mes-día"
+                    edadG = fechaNacimiento.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    // Manejar el caso en el que la cadena de fecha no pueda ser analizada
+                    // Aquí puedes mostrar un mensaje de error o tomar alguna otra acción adecuada
+                    Debug.LogError("La fecha de nacimiento no tiene un formato válido.");
+                }
+
                 birthdaryG = userGender.text;
 
                 Debug.Log(emailG + " " + passwordG + " " + nombreG + " " + nicknameG + " " + edadG + " " + birthdaryG);
@@ -259,7 +281,6 @@ public class Registrar : MonoBehaviour
         nombre_field.text = nombreG;
         passwordConfirm_field.text = passwordG;
         userGender.text = birthdaryG;
-
     }
 
 

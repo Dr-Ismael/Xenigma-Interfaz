@@ -70,6 +70,7 @@ public class Login : MonoBehaviour
         }
     }
 
+    //Cuando el sistema inicia revisa si el usuario se ha salido correctamente o si hay un usuario logeado actualmente para no cerrar su sesion.
     public void Awake()
     {
         int userLogeado = PlayerPrefs.GetInt("userLogeado");
@@ -89,9 +90,9 @@ public class Login : MonoBehaviour
         }
     }
 
+    //Permite logearse al usuario
     public void logearse()
     {
-
         if (email_field.text == "" || password_field.text == "")
         {
             Debug.Log("Comprueba de que los campos no esten vacios");
@@ -155,8 +156,12 @@ public class Login : MonoBehaviour
         }
     }
 
+    //Permite iniciar la ultima sesion abierta si el usuario no cerro sesion.
     public void reLogearse()
     {
+        //Recupero los ultimos datos guardados
+        emailG = PlayerPrefs.GetString("userEmail");
+        passwordG=PlayerPrefs.GetString("userPass");
 
         connectionString = "Server=localhost;Port=3306;Database=Xenigmabd;User=XenigmaJuego;Password=OHfoUIt[gt7uHWJS;";
         MySqlConnection connection = new MySqlConnection(connectionString);

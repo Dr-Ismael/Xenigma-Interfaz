@@ -15,6 +15,9 @@ public class MostrarMiembrosClan : MonoBehaviour
 {
     public TextMeshProUGUI nombre_Clan, CambiarNombre_TXT, NombreCambiado_TXT;
 
+    //Guarda el id del usuario elegido en el menu de clanes
+    public string idMiembroPublico;
+
     public InputField Nombre_field, nickname_field;
     public TextMeshProUGUI edadTxt;
     public TMP_Dropdown dropNewMemberYears, dropEditMemberYears;
@@ -276,7 +279,6 @@ public class MostrarMiembrosClan : MonoBehaviour
 
     public void AgregarMiembros()
     {
-
         string query = "INSERT INTO `miembros_clanes` (`id_miembro`, `nombre`, `nickname`, `edad`, `idLider`, `idClan`, `idAvatar`, `puntaje`, `genero`, `lugares`,`hrs`,`medallas`,`coleccionables`,`distancia` ) VALUES (NULL, '" + NombreG + "', '" + NicknameG + "', '" + EdadG + "', '" + JalarId.resultadoID + "', '" + TomarIDClan.resultadoIDClan + "', '" + idAvatarMiembroG + "', 0, '" + generoG + "',0,0,0,0,0);";
         sumarMiembro();
 
@@ -514,6 +516,7 @@ public class MostrarMiembrosClan : MonoBehaviour
     //Función que permite visualizar la info del miembro seleccionado
     public void cargarInfoMiembro(int idMiembro)
     {
+        idMiembroPublico = idMiembro.ToString(); ;
         string queryInfo = "SELECT nombre, lugares, hrs, medallas, puntaje, idAvatar, coleccionables FROM miembros_clanes WHERE id_miembro = '" + idMiembro + "';";
 
         MS_Connection = new MySqlConnection(connectionString);
@@ -626,7 +629,6 @@ public class MostrarMiembrosClan : MonoBehaviour
     //Permite cambiar los datos del miembro
     public void cambiarDatosMiembro()
     {
-
         if (idAvatarMiembroG == 0 || string.IsNullOrEmpty(generoElegido) || string.IsNullOrEmpty(nombreEditMember) || string.IsNullOrEmpty(nicknameEditMember))
         {
             Debug.Log("Selecciona el nuevo género y el nuevo avatar");

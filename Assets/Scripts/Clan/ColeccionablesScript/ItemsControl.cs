@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Generic;
 using System.Text;
 using MySql.Data.MySqlClient;
 using UnityEngine;
@@ -9,6 +8,8 @@ using UnityEngine.UI;
 public class ItemsControl : MonoBehaviour
 {
     public CrearClan TomarIDClan;
+
+    public MostrarMiembrosClan TomarIDMiembro;
 
     //Lista de coleccionables a usar
     public List<ListaColeccionables> Coleccionables = new List<ListaColeccionables>();
@@ -52,20 +53,10 @@ public class ItemsControl : MonoBehaviour
 
     public void cargarColeccionablesClan()
     {
-        /*
         //Limpio la lista de coleccionables que se muestran
-        reiniciarInterfazColeccionables();*/
+        reiniciarInterfazColeccionables();
 
-        foreach (var itemLista in Coleccionables)
-        {
-            // Modificar la opacidad de la imagen
-            Color colorMedio = itemLista.imgColeccionable.color;
-            colorMedio.a = 128 / 255.0f; // Establece el valor de alpha aproximadamente a 0.502
-            itemLista.imgColeccionable.color = colorMedio;
-        }
-
-        int id = 4;
-        string queryInfo = "SELECT Col_IdColeccionable FROM coleccionables WHERE Col_IdClan = '" + id + "';";
+        string queryInfo = "SELECT Col_IdColeccionable FROM coleccionables WHERE Col_IdClan = '" + TomarIDClan.resultadoIDClan + "';";
 
         MS_Connection = new MySqlConnection(connectionString);
         MS_Connection.Open();
@@ -101,20 +92,10 @@ public class ItemsControl : MonoBehaviour
 
     public void cargarMedallasClan()
     {
-        /*
         //Limpio la lista de medallas que se muestran
-        reiniciarInterfazMedallas();*/
+        reiniciarInterfazMedallas();
 
-        foreach (var itemLista in Medallas)
-        {
-            // Modificar la opacidad de la imagen
-            Color colorMedio = itemLista.imgMedalla.color;
-            colorMedio.a = 128 / 255.0f; // Establece el valor de alpha aproximadamente a 0.502
-            itemLista.imgMedalla.color = colorMedio;
-        }
-
-        int id = 4;
-        string queryInfo = "SELECT Med_IdMedalla FROM medallas WHERE Med_IdClan = '" + id + "';";
+        string queryInfo = "SELECT Med_IdMedalla FROM medallas WHERE Med_IdClan = '" + TomarIDClan.resultadoIDClan + "';";
 
         MS_Connection = new MySqlConnection(connectionString);
         MS_Connection.Open();
@@ -151,20 +132,12 @@ public class ItemsControl : MonoBehaviour
     //Carga los coleccionables de los miembros
     public void cargarColeccionablesMiembro()
     {
-        /*
+        Debug.Log(TomarIDMiembro.idMiembroPublico + " ID Miembro Coleccionable");
         //Limpio la lista de coleccionables que se muestran
-        reiniciarInterfazColeccionables();*/
+        reiniciarInterfazColeccionables();
 
-        foreach (var itemLista in Coleccionables)
-        {
-            // Modificar la opacidad de la imagen
-            Color colorMedio = itemLista.imgColeccionable.color;
-            colorMedio.a = 128 / 255.0f; // Establece el valor de alpha aproximadamente a 0.502
-            itemLista.imgColeccionable.color = colorMedio;
-        }
+        string queryInfo = "SELECT Col_IdColeccionable FROM coleccionables WHERE Col_IdMiembro = '" + TomarIDMiembro.idMiembroPublico + "';";
 
-        int id = 5;
-        string queryInfo = "SELECT Col_IdColeccionable FROM coleccionables WHERE Col_IdClan = '" + id + "';";
 
         MS_Connection = new MySqlConnection(connectionString);
         MS_Connection.Open();
@@ -201,20 +174,11 @@ public class ItemsControl : MonoBehaviour
     //Carga las medallas de los miembros
     public void cargarMedallasMiembro()
     {
-        /*
+        Debug.Log(TomarIDMiembro.idMiembroPublico + " ID Miembro medalla");
         //Limpio la lista de medallas que se muestran
-        reiniciarInterfazMedallas();*/
+        reiniciarInterfazMedallas();
 
-        foreach (var itemLista in Medallas)
-        {
-            // Modificar la opacidad de la imagen
-            Color colorMedio = itemLista.imgMedalla.color;
-            colorMedio.a = 128 / 255.0f; // Establece el valor de alpha aproximadamente a 0.502
-            itemLista.imgMedalla.color = colorMedio;
-        }
-
-        int id = 5;
-        string queryInfo = "SELECT Med_IdMedalla FROM medallas WHERE Med_IdClan = '" + id + "';";
+        string queryInfo = "SELECT Med_IdMedalla FROM medallas WHERE Med_IdMiembro = '" + TomarIDMiembro.idMiembroPublico + "';";
 
         MS_Connection = new MySqlConnection(connectionString);
         MS_Connection.Open();
@@ -257,6 +221,7 @@ public class ItemsControl : MonoBehaviour
             colorMedio.a = 128 / 255.0f; // Establece el valor de alpha aproximadamente a 0.502
             itemLista.imgMedalla.color = colorMedio;
         }
+        idsMedallas.Clear(); //Limpia la lista de medallas
     }
 
     public void reiniciarInterfazColeccionables()
@@ -268,9 +233,8 @@ public class ItemsControl : MonoBehaviour
             colorMedio.a = 128 / 255.0f; // Establece el valor de alpha aproximadamente a 0.502
             itemLista.imgColeccionable.color = colorMedio;
         }
+        idsColeccionables.Clear(); //Limpia la lista de coleccionables
     }
-
-
 }
 
 [System.Serializable]
