@@ -1,23 +1,29 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-
 using MySql.Data;
 using MySql.Data.MySqlClient;
+using TMPro;
 using UnityEditor;
-using System.Globalization;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class Registrar : MonoBehaviour
 {
     public string password_regex;
 
-    public TMP_Text pass_mayuculas, pass_minusculas, pass_digito, pass_especial_caracter, pass_8letras, pass_confirm, userBirthday, userGender;
+    public TMP_Text pass_mayuculas,
+        pass_minusculas,
+        pass_digito,
+        pass_especial_caracter,
+        pass_8letras,
+        pass_confirm,
+        userBirthday,
+        userGender;
 
     private string connectionString;
 
@@ -25,7 +31,11 @@ public class Registrar : MonoBehaviour
 
     private MySqlCommand MS_Comand;
 
-    public InputField nombre_field, nickname_field, email_field, password_field, passwordConfirm_field;
+    public InputField nombre_field,
+        nickname_field,
+        email_field,
+        password_field,
+        passwordConfirm_field;
 
     private MySqlDataReader MS_Reader;
 
@@ -33,12 +43,17 @@ public class Registrar : MonoBehaviour
     private bool password_valid = false;
     private bool password_confirm_valid = false;
 
+    [SerializeField]
+    GameObject MenuAvatar;
 
-    [SerializeField] GameObject MenuAvatar;
-    [SerializeField] GameObject MenuRegistro;
-    [SerializeField] GameObject MenuLogin;
-    [SerializeField] GameObject MenuInicio;
+    [SerializeField]
+    GameObject MenuRegistro;
 
+    [SerializeField]
+    GameObject MenuLogin;
+
+    [SerializeField]
+    GameObject MenuInicio;
 
     private string nombreG;
     private string nicknameG;
@@ -50,9 +65,11 @@ public class Registrar : MonoBehaviour
     private string resultado;
     public TMP_Text RespuestaText;
 
+    public ConexionMySQL conexionMySQL;
+
     private void Start()
     {
-        connectionString = "Server=localhost;Port=3306;Database=Xenigmabd;User=XenigmaJuego;Password=OHfoUIt[gt7uHWJS;";
+        connectionString = conexionMySQL.connectionString;
         MySqlConnection connection = new MySqlConnection(connectionString);
 
         try
@@ -70,7 +87,6 @@ public class Registrar : MonoBehaviour
         }
 
         //IrAlInicio();
-        
     }
 
     public void email_check()
@@ -101,7 +117,6 @@ public class Registrar : MonoBehaviour
         {
             password_valid = false;
             password_field.image.color = Color.red;
-
         }
 
         //Mayusculas
@@ -166,13 +181,14 @@ public class Registrar : MonoBehaviour
         {
             passwordConfirm_field.image.color = Color.red;
             pass_confirm.color = Color.red;
-
         }
     }
 
     public void registro_submit()
     {
-        email_valid = Regex.Match(email_field.text, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$").Success;
+        email_valid = Regex
+            .Match(email_field.text, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$")
+            .Success;
         password_valid = Regex.Match(password_field.text, password_regex).Success;
         if (password_field.text == passwordConfirm_field.text)
         {
@@ -183,11 +199,16 @@ public class Registrar : MonoBehaviour
             password_confirm_valid = false;
         }
 
-        if (nombre_field == true && nickname_field == true && userBirthday == true && email_valid == true && password_valid == true && password_confirm_valid == true)
+        if (
+            nombre_field == true
+            && nickname_field == true
+            && userBirthday == true
+            && email_valid == true
+            && password_valid == true
+            && password_confirm_valid == true
+        )
         {
-            
             emailG = email_field.text;
-            
 
             string query = "SELECT * FROM users where email = '" + emailG + "';";
 
@@ -219,13 +240,29 @@ public class Registrar : MonoBehaviour
                 DateTime fechaNacimiento;
 
                 // Intentar analizar la fecha con el primer formato "día/mes/año"
-                if (DateTime.TryParseExact(fechaNacimientoString, "d/M/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaNacimiento))
+                if (
+                    DateTime.TryParseExact(
+                        fechaNacimientoString,
+                        "d/M/yyyy",
+                        CultureInfo.InvariantCulture,
+                        DateTimeStyles.None,
+                        out fechaNacimiento
+                    )
+                )
                 {
                     // Formatear la fecha de nacimiento en el formato "año-mes-día"
                     edadG = fechaNacimiento.ToString("yyyy-MM-dd");
                 }
                 // Si no se pudo analizar con el primer formato, intentar con el segundo formato "mes/día/año"
-                else if (DateTime.TryParseExact(fechaNacimientoString, "M/d/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaNacimiento))
+                else if (
+                    DateTime.TryParseExact(
+                        fechaNacimientoString,
+                        "M/d/yyyy",
+                        CultureInfo.InvariantCulture,
+                        DateTimeStyles.None,
+                        out fechaNacimiento
+                    )
+                )
                 {
                     // Formatear la fecha de nacimiento en el formato "año-mes-día"
                     edadG = fechaNacimiento.ToString("yyyy-MM-dd");
@@ -239,21 +276,30 @@ public class Registrar : MonoBehaviour
 
                 birthdaryG = userGender.text;
 
-                Debug.Log(emailG + " " + passwordG + " " + nombreG + " " + nicknameG + " " + edadG + " " + birthdaryG);
+                Debug.Log(
+                    emailG
+                        + " "
+                        + passwordG
+                        + " "
+                        + nombreG
+                        + " "
+                        + nicknameG
+                        + " "
+                        + edadG
+                        + " "
+                        + birthdaryG
+                );
 
                 MenuAvatar.SetActive(true);
                 MenuRegistro.SetActive(false);
             }
-
         }
-
     }
 
     public void SeleccionarAvatar()
     {
         Debug.Log(idAvatarG);
     }
-
 
     public void regresar()
     {
@@ -262,7 +308,6 @@ public class Registrar : MonoBehaviour
         MenuAvatar.SetActive(false);
         Limpiar();
         MenuRegistro.SetActive(true);
-
     }
 
     private void Limpiar()
@@ -283,15 +328,30 @@ public class Registrar : MonoBehaviour
         userGender.text = birthdaryG;
     }
 
-
-
     public void guaradr()
     {
         byte[] password_bytes = new UTF8Encoding().GetBytes(passwordG);
-        byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(password_bytes);
+        byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(
+            password_bytes
+        );
         string encoded_password = BitConverter.ToString(hash).Replace("-", string.Empty).ToLower();
 
-        string query = "INSERT INTO users(id, nombre, nickname, edad, email, password, idAvatar, puntajeUser, genero) VALUES (null, '" + nombreG + "', '" + nicknameG + "', '" + edadG + "', '" + emailG + "', '" + encoded_password + "', '" + idAvatarG + "', 0, '" + birthdaryG + "');";
+        string query =
+            "INSERT INTO users(id, nombre, nickname, edad, email, password, idAvatar, puntajeUser, genero) VALUES (null, '"
+            + nombreG
+            + "', '"
+            + nicknameG
+            + "', '"
+            + edadG
+            + "', '"
+            + emailG
+            + "', '"
+            + encoded_password
+            + "', '"
+            + idAvatarG
+            + "', 0, '"
+            + birthdaryG
+            + "');";
 
         MS_Connection = new MySqlConnection(connectionString);
         MS_Connection.Open();
@@ -307,7 +367,6 @@ public class Registrar : MonoBehaviour
             Debug.Log(e.Message);
         }
         MS_Connection.Close();
-
     }
 
     public void login()
@@ -316,7 +375,6 @@ public class Registrar : MonoBehaviour
         MenuAvatar.SetActive(false);
         MenuInicio.SetActive(false);
         MenuLogin.SetActive(true);
-
     }
 
     public void IrAlInicio()
@@ -346,10 +404,10 @@ public class Registrar : MonoBehaviour
             Debug.Log("No se encontró la imagen seleccionada");
         }
     }
-
 }
 
-[System.Serializable] public class ListaTotal
+[System.Serializable]
+public class ListaTotal
 {
     public Image Image;
     public int ID;

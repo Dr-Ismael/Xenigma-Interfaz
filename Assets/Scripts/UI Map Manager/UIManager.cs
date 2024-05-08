@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using MySql.Data;
 using MySql.Data.MySqlClient;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-
 
 public class UIManager : MonoBehaviour
 {
@@ -26,11 +25,13 @@ public class UIManager : MonoBehaviour
 
     public TextMeshProUGUI txtNicknameUsuario;
 
-    void Start()
-    {
-        connectionString = "Server=localhost;Port=3306;Database=Xenigmabd;User=XenigmaJuego;Password=OHfoUIt[gt7uHWJS;";
-        MySqlConnection connection = new MySqlConnection(connectionString);
+    public ConexionMySQL conexionMySQL;
 
+    private void Start()
+    {
+        connectionString = conexionMySQL.connectionString;
+        MySqlConnection connection = new MySqlConnection(connectionString);
+        
         try
         {
             connection.Open();
@@ -83,16 +84,14 @@ public class UIManager : MonoBehaviour
                 }
 
                 txtNicknameUsuario.text = nickname;
-
             }
             MS_Reader.Close();
         }
         else
         {
-          Debug.Log("Error al parsear el id del usuario");
+            Debug.Log("Error al parsear el id del usuario");
         }
     }
-
 }
 
 [System.Serializable]

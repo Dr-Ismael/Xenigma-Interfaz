@@ -4271,7 +4271,6 @@ GameObject:
   m_Component:
   - component: {fileID: 407414364}
   - component: {fileID: 407414365}
-  - component: {fileID: 407414366}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -4327,32 +4326,7 @@ MonoBehaviour:
     ID: 8
   imgAvatarUsuario: {fileID: 2028284680}
   txtNicknameUsuario: {fileID: 47861135}
---- !u!114 &407414366
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 407414363}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ad0fe751f7ae0942b8d00235173d2a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  email_field: {fileID: 0}
-  password_field: {fileID: 0}
-  pagBienvenida: {fileID: 0}
-  MenuLogin: {fileID: 0}
-  MenuPrincipal: {fileID: 0}
-  ajustes: {fileID: 0}
-  PagAvatar: {fileID: 0}
-  pagInicio: {fileID: 0}
-  NicknameInput: {fileID: 0}
-  resultadoID: 
-  txtError: {fileID: 0}
-  email_field_Reg: {fileID: 0}
-  password_field_Reg: {fileID: 0}
-  BtnIniciarRegistro: {fileID: 0}
+  conexionMySQL: {fileID: 11400000, guid: dd475edfb45254a4bb0de5509b0db216, type: 2}
 --- !u!1 &424062051
 GameObject:
   m_ObjectHideFlags: 0
@@ -5985,6 +5959,7 @@ MonoBehaviour:
   Valdificultad: 
   VisitasClanes: 
   Puntaje: 0
+  conexionMySQL: {fileID: 11400000, guid: dd475edfb45254a4bb0de5509b0db216, type: 2}
 --- !u!65 &643176279
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12943,7 +12918,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 407414366}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Login, Assembly-CSharp
         m_MethodName: marcarSalida
         m_Mode: 1
@@ -12955,7 +12930,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 407414366}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Login, Assembly-CSharp
         m_MethodName: eliminarLogeo
         m_Mode: 1

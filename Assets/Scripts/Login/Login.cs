@@ -46,11 +46,14 @@ public class Login : MonoBehaviour
     public InputField email_field_Reg, password_field_Reg;
     public Button BtnIniciarRegistro;
 
+    public ConexionMySQL conexionMySQL; 
 
     private void Start()
     {
-        connectionString = "Server=localhost;Port=3306;Database=Xenigmabd;User=XenigmaJuego;Password=OHfoUIt[gt7uHWJS;";
+        connectionString = conexionMySQL.connectionString;
         MySqlConnection connection = new MySqlConnection(connectionString);
+
+        //Debug.Log("Conexion prueba : "+conexionMySQL.connectionString);
 
         txtError.gameObject.SetActive(false);
         BtnIniciarRegistro.gameObject.SetActive(false);
@@ -73,6 +76,7 @@ public class Login : MonoBehaviour
     //Cuando el sistema inicia revisa si el usuario se ha salido correctamente o si hay un usuario logeado actualmente para no cerrar su sesion.
     public void Awake()
     {
+        Start();
         int userLogeado = PlayerPrefs.GetInt("userLogeado");
         //Comprueba si el usuario esta logeado para reLogearlo
         if (userLogeado == 1)
@@ -84,7 +88,6 @@ public class Login : MonoBehaviour
             {
              emailG = PlayerPrefs.GetString("userEmail");
              passwordG = PlayerPrefs.GetString("userPass");
-             Debug.Log("Awake email " + email_field.text + " pass " + password_field.text);
              reLogearse();
             }
         }
@@ -110,8 +113,6 @@ public class Login : MonoBehaviour
             byte[] password_bytes = new UTF8Encoding().GetBytes(passwordG);
             byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(password_bytes);
             string encoded_password = BitConverter.ToString(hash).Replace("-", string.Empty).ToLower();
-
-            Debug.Log(encoded_password);
 
             string query = "SELECT * FROM users where email = '" + emailG + "' and password = '" + encoded_password + "';";
             Debug.Log(query);
@@ -162,26 +163,12 @@ public class Login : MonoBehaviour
         //Recupero los ultimos datos guardados
         emailG = PlayerPrefs.GetString("userEmail");
         passwordG=PlayerPrefs.GetString("userPass");
+        Debug.Log("Awake email " + emailG + " pass " + passwordG);
 
-        connectionString = "Server=localhost;Port=3306;Database=Xenigmabd;User=XenigmaJuego;Password=OHfoUIt[gt7uHWJS;";
         MySqlConnection connection = new MySqlConnection(connectionString);
 
         txtError.gameObject.SetActive(false);
         BtnIniciarRegistro.gameObject.SetActive(false);
-
-        try
-        {
-            connection.Open();
-            Console.WriteLine("Conexión exitosa");
-        }
-        catch (MySqlException ex)
-        {
-            Console.WriteLine("Error en la conexión: " + ex.Message);
-        }
-        finally
-        {
-            connection.Close();
-        }
 
         byte[] password_bytes = new UTF8Encoding().GetBytes(passwordG);
         byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(password_bytes);

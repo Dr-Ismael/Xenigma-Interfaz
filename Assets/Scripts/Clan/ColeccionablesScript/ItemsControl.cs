@@ -29,11 +29,12 @@ public class ItemsControl : MonoBehaviour
     private MySqlCommand MS_Comand;
 
     private MySqlDataReader MS_Reader;
+    
+    public ConexionMySQL conexionMySQL;
 
-    void Start()
+    private void Start()
     {
-        connectionString =
-            "Server=localhost;Port=3306;Database=Xenigmabd;User=XenigmaJuego;Password=OHfoUIt[gt7uHWJS;";
+        connectionString = conexionMySQL.connectionString;
         MySqlConnection connection = new MySqlConnection(connectionString);
 
         try
@@ -56,7 +57,10 @@ public class ItemsControl : MonoBehaviour
         //Limpio la lista de coleccionables que se muestran
         reiniciarInterfazColeccionables();
 
-        string queryInfo = "SELECT Col_IdColeccionable FROM coleccionables WHERE Col_IdClan = '" + TomarIDClan.resultadoIDClan + "';";
+        string queryInfo =
+            "SELECT Col_IdColeccionable FROM coleccionables WHERE Col_IdClan = '"
+            + TomarIDClan.resultadoIDClan
+            + "';";
 
         MS_Connection = new MySqlConnection(connectionString);
         MS_Connection.Open();
@@ -95,7 +99,10 @@ public class ItemsControl : MonoBehaviour
         //Limpio la lista de medallas que se muestran
         reiniciarInterfazMedallas();
 
-        string queryInfo = "SELECT Med_IdMedalla FROM medallas WHERE Med_IdClan = '" + TomarIDClan.resultadoIDClan + "';";
+        string queryInfo =
+            "SELECT Med_IdMedalla FROM medallas WHERE Med_IdClan = '"
+            + TomarIDClan.resultadoIDClan
+            + "';";
 
         MS_Connection = new MySqlConnection(connectionString);
         MS_Connection.Open();
@@ -136,8 +143,10 @@ public class ItemsControl : MonoBehaviour
         //Limpio la lista de coleccionables que se muestran
         reiniciarInterfazColeccionables();
 
-        string queryInfo = "SELECT Col_IdColeccionable FROM coleccionables WHERE Col_IdMiembro = '" + TomarIDMiembro.idMiembroPublico + "';";
-
+        string queryInfo =
+            "SELECT Col_IdColeccionable FROM coleccionables WHERE Col_IdMiembro = '"
+            + TomarIDMiembro.idMiembroPublico
+            + "';";
 
         MS_Connection = new MySqlConnection(connectionString);
         MS_Connection.Open();
@@ -178,7 +187,10 @@ public class ItemsControl : MonoBehaviour
         //Limpio la lista de medallas que se muestran
         reiniciarInterfazMedallas();
 
-        string queryInfo = "SELECT Med_IdMedalla FROM medallas WHERE Med_IdMiembro = '" + TomarIDMiembro.idMiembroPublico + "';";
+        string queryInfo =
+            "SELECT Med_IdMedalla FROM medallas WHERE Med_IdMiembro = '"
+            + TomarIDMiembro.idMiembroPublico
+            + "';";
 
         MS_Connection = new MySqlConnection(connectionString);
         MS_Connection.Open();

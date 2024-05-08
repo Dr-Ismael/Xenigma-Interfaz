@@ -4,18 +4,16 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using UnityEngine.SceneManagement;
-
 using MySql.Data;
 using MySql.Data.MySqlClient;
+using TMPro;
 using UnityEditor;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SeleccionarJugadores : MonoBehaviour
 {
-
     private string connectionString;
 
     private MySqlConnection MS_Connection;
@@ -31,17 +29,21 @@ public class SeleccionarJugadores : MonoBehaviour
     public Transform miembrosContenedor;
     public CrearClan TomarIDClan;
 
-    [SerializeField] GameObject PagPrincipal;
-    [SerializeField] GameObject MiembrosJuego;
+    [SerializeField]
+    GameObject PagPrincipal;
+
+    [SerializeField]
+    GameObject MiembrosJuego;
 
     string idSeleccionados;
 
     public List<Lista> ObjetosListado = new List<Lista>();
 
+    public ConexionMySQL conexionMySQL;
 
-    void Start()
+    private void Start()
     {
-        connectionString = "Server=localhost;Port=3306;Database=Xenigmabd;User=XenigmaJuego;Password=OHfoUIt[gt7uHWJS;";
+        connectionString = conexionMySQL.connectionString;
         MySqlConnection connection = new MySqlConnection(connectionString);
 
         try
@@ -58,14 +60,15 @@ public class SeleccionarJugadores : MonoBehaviour
             connection.Close();
         }
 
-
-
         Pintar();
     }
 
     public void Pintar()
     {
-        string query = "SELECT COUNT(*) FROM miembros_clanes WHERE idClan = '" + TomarIDClan.resultadoIDClan + "';";
+        string query =
+            "SELECT COUNT(*) FROM miembros_clanes WHERE idClan = '"
+            + TomarIDClan.resultadoIDClan
+            + "';";
         //  string query = "SELECT COUNT(*) FROM miembros_clanes WHERE idClan = 1;";
         PlayerPrefs.GetString("resultadoIDClan", TomarIDClan.resultadoIDClan);
         PlayerPrefs.Save();
@@ -77,7 +80,6 @@ public class SeleccionarJugadores : MonoBehaviour
 
         MS_Comand = new MySqlCommand(query, MS_Connection);
 
-
         MS_Reader = MS_Comand.ExecuteReader();
         while (MS_Reader.Read())
         {
@@ -85,7 +87,8 @@ public class SeleccionarJugadores : MonoBehaviour
         }
         MS_Reader.Close();
 
-        string query2 = "SELECT * FROM miembros_clanes where idClan = '" + TomarIDClan.resultadoIDClan + "';";
+        string query2 =
+            "SELECT * FROM miembros_clanes where idClan = '" + TomarIDClan.resultadoIDClan + "';";
         // string query2 = "SELECT * FROM miembros_clanes where idClan = 1;";
         MS_Connection = new MySqlConnection(connectionString);
         MS_Connection.Open();
@@ -124,14 +127,18 @@ public class SeleccionarJugadores : MonoBehaviour
             RectTransform rt = miembroObject.GetComponent<RectTransform>();
             rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, posY);
 
-            TextMeshProUGUI nombreText = miembroObject.transform.Find("Nombre").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI nombreText = miembroObject
+                .transform.Find("Nombre")
+                .GetComponent<TextMeshProUGUI>();
             nombreText.text = miembro.nombre;
 
-            TextMeshProUGUI nicknameText = miembroObject.transform.Find("Nickname").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI nicknameText = miembroObject
+                .transform.Find("Nickname")
+                .GetComponent<TextMeshProUGUI>();
             nicknameText.text = miembro.nickname;
 
             Image avatarMember = miembroObject.transform.Find("ImgAvatar").GetComponent<Image>();
-            
+
             // Busca la imagen correspondiente en la lista de objetos
             Lista avatar = ObjetosListado.Find(imagen => imagen.ID == miembro.idAvatar);
 
@@ -147,7 +154,12 @@ public class SeleccionarJugadores : MonoBehaviour
 
             // obtener el componente Toggle y agregar un listener para el evento onValueChanged
             Toggle toggle = miembroObject.transform.Find("Toggle").GetComponent<Toggle>();
-            toggle.onValueChanged.AddListener(delegate { OnToggleValueChanged(miembro, toggle); });
+            toggle.onValueChanged.AddListener(
+                delegate
+                {
+                    OnToggleValueChanged(miembro, toggle);
+                }
+            );
 
             // aumenta el valor de posY en el espaciado deseado
             posY -= 210f;
@@ -190,13 +202,11 @@ public class SeleccionarJugadores : MonoBehaviour
             // Cambiar a la siguiente escena
             SceneManager.LoadScene("xenigma");
         }
-
         else
         {
             Debug.Log("Por favor, seleccione al menos un miembro para continuar.");
         }
     }
-
 
     public void RegresarInicio()
     {

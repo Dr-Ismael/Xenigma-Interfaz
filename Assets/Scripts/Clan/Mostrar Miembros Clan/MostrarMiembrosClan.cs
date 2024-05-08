@@ -75,9 +75,11 @@ public class MostrarMiembrosClan : MonoBehaviour
     //Panel de datos faltantes en editar miembro
     public Image pnlErrorEditar, infoMemberImage;
 
-    void Start()
+    public ConexionMySQL conexionMySQL; 
+
+    private void Start()
     {
-        connectionString = "Server=localhost;Port=3306;Database=Xenigmabd;User=XenigmaJuego;Password=OHfoUIt[gt7uHWJS;";
+        connectionString = conexionMySQL.connectionString;
         MySqlConnection connection = new MySqlConnection(connectionString);
 
         try

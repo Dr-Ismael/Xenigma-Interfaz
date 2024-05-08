@@ -1,16 +1,16 @@
-using System.Dynamic;
-using MySql.Data.MySqlClient;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Security.Cryptography;
 using System.Text;
+using MySql.Data.MySqlClient;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class Ranking : MonoBehaviour
 {
-
     private string connectionString;
 
     private MySqlConnection MS_Connection;
@@ -19,10 +19,14 @@ public class Ranking : MonoBehaviour
 
     private MySqlDataReader MS_Reader;
 
-    [SerializeField] GameObject PagPrincipal;
-    [SerializeField] GameObject Rankingpag;
+    [SerializeField]
+    GameObject PagPrincipal;
 
-    public List<GuardarDatosMiembrosRanking> GuardarDatosMiembrosRanking = new List<GuardarDatosMiembrosRanking>();
+    [SerializeField]
+    GameObject Rankingpag;
+
+    public List<GuardarDatosMiembrosRanking> GuardarDatosMiembrosRanking =
+        new List<GuardarDatosMiembrosRanking>();
 
     public GameObject miembroPrefab;
     public GameObject clanPrefab;
@@ -32,10 +36,11 @@ public class Ranking : MonoBehaviour
     public GameObject BotonesClan;
     public GameObject BotonesMiembros;
 
-    void Start()
+    public ConexionMySQL conexionMySQL;
+
+    private void Start()
     {
-        //Inicio de la conexión a la base de datos de la aplicacion
-        connectionString = "Server=localhost;Port=3306;Database=Xenigmabd;User=XenigmaJuego;Password=OHfoUIt[gt7uHWJS;";
+        connectionString = conexionMySQL.connectionString;
         MySqlConnection connection = new MySqlConnection(connectionString);
 
         try
@@ -51,8 +56,6 @@ public class Ranking : MonoBehaviour
         {
             connection.Close();
         }
-
-
     }
 
     public void PintarMayorPuntajeMiembrosClanes()
@@ -104,16 +107,24 @@ public class Ranking : MonoBehaviour
             RectTransform rt = miembroObject.GetComponent<RectTransform>();
             rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, posY);
 
-            TextMeshProUGUI nombreText = miembroObject.transform.Find("Nombre").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI nombreText = miembroObject
+                .transform.Find("Nombre")
+                .GetComponent<TextMeshProUGUI>();
             nombreText.text = miembro.nombre;
 
-            TextMeshProUGUI nicknameText = miembroObject.transform.Find("Nickname").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI nicknameText = miembroObject
+                .transform.Find("Nickname")
+                .GetComponent<TextMeshProUGUI>();
             nicknameText.text = miembro.nombre;
 
-            TextMeshProUGUI puntajeText = miembroObject.transform.Find("DatoMiembro").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI puntajeText = miembroObject
+                .transform.Find("DatoMiembro")
+                .GetComponent<TextMeshProUGUI>();
             puntajeText.text = miembro.puntajeMiembro.ToString();
 
-            TextMeshProUGUI tipoDatoText = miembroObject.transform.Find("TipoDatoMiembro").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI tipoDatoText = miembroObject
+                .transform.Find("TipoDatoMiembro")
+                .GetComponent<TextMeshProUGUI>();
             tipoDatoText.text = "Pts";
 
             // aumenta el valor de posY en el espaciado deseado
@@ -169,13 +180,19 @@ public class Ranking : MonoBehaviour
             RectTransform rt = miembroObject.GetComponent<RectTransform>();
             rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, posY);
 
-            TextMeshProUGUI nombreText = miembroObject.transform.Find("NombreClan").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI nombreText = miembroObject
+                .transform.Find("NombreClan")
+                .GetComponent<TextMeshProUGUI>();
             nombreText.text = miembro.nombre;
 
-            TextMeshProUGUI edadText = miembroObject.transform.Find("DatoClan").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI edadText = miembroObject
+                .transform.Find("DatoClan")
+                .GetComponent<TextMeshProUGUI>();
             edadText.text = miembro.puntajeClan.ToString();
 
-            TextMeshProUGUI tipoDatoText = miembroObject.transform.Find("tipoDato").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI tipoDatoText = miembroObject
+                .transform.Find("tipoDato")
+                .GetComponent<TextMeshProUGUI>();
             tipoDatoText.text = "Pts";
 
             // aumenta el valor de posY en el espaciado deseado
@@ -425,11 +442,17 @@ public class Ranking : MonoBehaviour
             RectTransform rt = miembroObject.GetComponent<RectTransform>();
             rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, posY);
 
-            TextMeshProUGUI nombreText = miembroObject.transform.Find("NombreClan").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI nombreText = miembroObject
+                .transform.Find("NombreClan")
+                .GetComponent<TextMeshProUGUI>();
             nombreText.text = miembro.nombre;
 
-            TextMeshProUGUI infoText = miembroObject.transform.Find("DatoClan").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI tipoDatoText = miembroObject.transform.Find("tipoDato").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI infoText = miembroObject
+                .transform.Find("DatoClan")
+                .GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI tipoDatoText = miembroObject
+                .transform.Find("tipoDato")
+                .GetComponent<TextMeshProUGUI>();
 
             switch (tipoDato)
             {
@@ -477,16 +500,23 @@ public class Ranking : MonoBehaviour
             RectTransform rt = miembroObject.GetComponent<RectTransform>();
             rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, posY);
 
-            TextMeshProUGUI nombreText = miembroObject.transform.Find("Nombre").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI nombreText = miembroObject
+                .transform.Find("Nombre")
+                .GetComponent<TextMeshProUGUI>();
             nombreText.text = miembro.nombre;
 
-            TextMeshProUGUI nicknameText = miembroObject.transform.Find("Nickname").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI nicknameText = miembroObject
+                .transform.Find("Nickname")
+                .GetComponent<TextMeshProUGUI>();
             nicknameText.text = miembro.nombre;
 
-            TextMeshProUGUI puntajeText = miembroObject.transform.Find("DatoMiembro").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI puntajeText = miembroObject
+                .transform.Find("DatoMiembro")
+                .GetComponent<TextMeshProUGUI>();
 
-            TextMeshProUGUI tipoDatoText = miembroObject.transform.Find("TipoDatoMiembro").GetComponent<TextMeshProUGUI>();
-
+            TextMeshProUGUI tipoDatoText = miembroObject
+                .transform.Find("TipoDatoMiembro")
+                .GetComponent<TextMeshProUGUI>();
 
             switch (tipoDato)
             {
@@ -540,7 +570,6 @@ public class Ranking : MonoBehaviour
         Rankingpag.SetActive(false);
         PagPrincipal.SetActive(true);
     }
-
 }
 
 [System.Serializable]

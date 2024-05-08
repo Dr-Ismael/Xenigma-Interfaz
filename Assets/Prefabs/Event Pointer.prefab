@@ -123,6 +123,7 @@ MonoBehaviour:
   _seguridad2: {fileID: 0}
   _visit: {fileID: 0}
   _visit2: {fileID: 0}
+  _cercano: {fileID: 0}
   eventPos:
     x: 0
     y: 0
@@ -132,3 +133,5 @@ MonoBehaviour:
   ValSeguridad: 
   Valdificultad: 
   VisitasClanes: 
+  Puntaje: 0
+  conexionMySQL: {fileID: 11400000, guid: dd475edfb45254a4bb0de5509b0db216, type: 2}

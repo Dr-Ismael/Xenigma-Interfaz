@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3903,6 +3903,7 @@ MonoBehaviour:
   idAvatarG: 0
   birthdaryG: 
   RespuestaText: {fileID: 700821310}
+  conexionMySQL: {fileID: 11400000, guid: dd475edfb45254a4bb0de5509b0db216, type: 2}
   ObjetosListado:
   - Image: {fileID: 0}
     ID: 1
@@ -3946,6 +3947,7 @@ MonoBehaviour:
   email_field_Reg: {fileID: 546619292}
   password_field_Reg: {fileID: 1381488186}
   BtnIniciarRegistro: {fileID: 253281530}
+  conexionMySQL: {fileID: 11400000, guid: dd475edfb45254a4bb0de5509b0db216, type: 2}
 --- !u!114 &143429140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3970,6 +3972,7 @@ MonoBehaviour:
   JalarId: {fileID: 143429139}
   TomarFuncion: {fileID: 143429141}
   TomarOtraFuncion: {fileID: 143429142}
+  conexionMySQL: {fileID: 11400000, guid: dd475edfb45254a4bb0de5509b0db216, type: 2}
 --- !u!114 &143429141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4030,6 +4033,7 @@ MonoBehaviour:
   txtNewEditMemberEdad: {fileID: 1313150846}
   pnlErrorEditar: {fileID: 687450236}
   infoMemberImage: {fileID: 1013925040}
+  conexionMySQL: {fileID: 11400000, guid: dd475edfb45254a4bb0de5509b0db216, type: 2}
   ObjetosListado:
   - Image: {fileID: 1950505617}
     ID: 1
@@ -4082,6 +4086,7 @@ MonoBehaviour:
     ID: 7
   - Image: {fileID: 1205629303}
     ID: 8
+  conexionMySQL: {fileID: 11400000, guid: dd475edfb45254a4bb0de5509b0db216, type: 2}
 --- !u!114 &143429143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4102,6 +4107,7 @@ MonoBehaviour:
   miembrosContenedor: {fileID: 1261689154}
   BotonesClan: {fileID: 1817142740}
   BotonesMiembros: {fileID: 2057398887}
+  conexionMySQL: {fileID: 11400000, guid: dd475edfb45254a4bb0de5509b0db216, type: 2}
 --- !u!114 &143429144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4581,6 +4587,7 @@ MonoBehaviour:
   - imgMedalla: {fileID: 796463212}
     IDMedalla: 36
     active: 0
+  conexionMySQL: {fileID: 11400000, guid: dd475edfb45254a4bb0de5509b0db216, type: 2}
 --- !u!1 &147031109
 GameObject:
   m_ObjectHideFlags: 0
@@ -12110,6 +12117,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1099146593}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
       - m_Target: {fileID: 133624493}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -12142,18 +12161,6 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 3
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1099146593}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -38097,6 +38104,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1784384714}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1012601080}
         m_TargetAssemblyTypeName: ButtonSoundManager, Assembly-CSharp
         m_MethodName: soundButton
@@ -44508,7 +44527,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

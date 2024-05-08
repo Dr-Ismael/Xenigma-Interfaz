@@ -1,5 +1,5 @@
-using MySql.Data.MySqlClient;
 using System;
+using MySql.Data.MySqlClient;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -23,12 +23,22 @@ public class TargetDetection : MonoBehaviour
     string IDMiembroPrin;
     string SitioID;
 
-    public InputField MayorPuntaje_field, MasBonitos_field, MasSeguros_field, MasInteresantes_field, MayorActFisica_field;
-    private string MayorPuntaje, MasBonitos, MasSeguros, MasInteresantes, MayorActFisica;
+    public InputField MayorPuntaje_field,
+        MasBonitos_field,
+        MasSeguros_field,
+        MasInteresantes_field,
+        MayorActFisica_field;
+    private string MayorPuntaje,
+        MasBonitos,
+        MasSeguros,
+        MasInteresantes,
+        MayorActFisica;
+
+    public ConexionMySQL conexionMySQL;
 
     private void Start()
     {
-        connectionString = "Server=localhost;Port=3306;Database=Xenigmabd;User=XenigmaJuego;Password=OHfoUIt[gt7uHWJS;";
+        connectionString = conexionMySQL.connectionString;
         MySqlConnection connection = new MySqlConnection(connectionString);
 
         try
@@ -44,7 +54,6 @@ public class TargetDetection : MonoBehaviour
         {
             connection.Close();
         }
-
     }
 
     public void MostrarBotonInfo()
@@ -74,8 +83,6 @@ public class TargetDetection : MonoBehaviour
         SitioID = IDSitio;
         Debug.Log("El ID del sitio es: " + SitioID);
 
-
-
         InfoText.SetActive(true);
         BtnGuardar.SetActive(true);
     }
@@ -88,7 +95,14 @@ public class TargetDetection : MonoBehaviour
     private void GuardarPuntajeMiembros()
     {
         //Asignar el puntaje a los miembros de los clanes
-        string query = "UPDATE miembros_clanes SET puntaje = puntaje + '" + puntajeBD + "' WHERE id_miembro IN (" + string.Join("", IDs.Split(' ')) + ") AND idClan = '" + IDclan + "';";
+        string query =
+            "UPDATE miembros_clanes SET puntaje = puntaje + '"
+            + puntajeBD
+            + "' WHERE id_miembro IN ("
+            + string.Join("", IDs.Split(' '))
+            + ") AND idClan = '"
+            + IDclan
+            + "';";
         Debug.Log(query);
 
         MS_Connection = new MySqlConnection(connectionString);
@@ -107,14 +121,17 @@ public class TargetDetection : MonoBehaviour
             Debug.Log(e.Message);
         }
         MS_Reader.Close();
-
     }
 
     private void InsertarClanes()
     {
-
         //Asignar el puntaje al clan
-        string query = "UPDATE clanes SET puntajeClan = puntajeClan + '" + puntajeBD + "' WHERE id = '" + IDclan + "';";
+        string query =
+            "UPDATE clanes SET puntajeClan = puntajeClan + '"
+            + puntajeBD
+            + "' WHERE id = '"
+            + IDclan
+            + "';";
         Debug.Log(query);
 
         MS_Connection = new MySqlConnection(connectionString);
@@ -138,7 +155,12 @@ public class TargetDetection : MonoBehaviour
     private void InsertarMiembroPrin()
     {
         //Asignar el puntaje al usuario principal(Padre y/o Tutor)
-        string query = "UPDATE users SET puntajeUser = puntajeUser + '" + puntajeBD + "' WHERE id = '" + IDMiembroPrin + "';";
+        string query =
+            "UPDATE users SET puntajeUser = puntajeUser + '"
+            + puntajeBD
+            + "' WHERE id = '"
+            + IDMiembroPrin
+            + "';";
         Debug.Log(query);
 
         MS_Connection = new MySqlConnection(connectionString);
@@ -161,7 +183,14 @@ public class TargetDetection : MonoBehaviour
 
     public void Valoracion()
     {
-        if (MayorPuntaje_field.text == "" || MasBonitos_field.text == "" || MasBonitos_field.text == "" || MasSeguros_field.text == "" || MasInteresantes_field.text == "" || MayorActFisica_field.text == "")
+        if (
+            MayorPuntaje_field.text == ""
+            || MasBonitos_field.text == ""
+            || MasBonitos_field.text == ""
+            || MasSeguros_field.text == ""
+            || MasInteresantes_field.text == ""
+            || MayorActFisica_field.text == ""
+        )
         {
             Debug.Log("Debe de llenar todo el formulario");
         }
@@ -173,9 +202,23 @@ public class TargetDetection : MonoBehaviour
             MasInteresantes = MasInteresantes_field.text;
             MayorActFisica = MayorActFisica_field.text;
 
-            string query = "INSERT INTO `valoracion` (`id_valoracion`, `mayor_puntaje`, `mas_visitaados`, `mas_bonitos`, `mas_seguros`, `mas_interesantes`, `actividad_fisica`, `idSitio`, `idUser`) VALUES (NULL, '" + MayorPuntaje + "', '1', '" + MasBonitos + "', '" + MasSeguros + "', '" + MasInteresantes + "', '" + MayorActFisica + "', '" + SitioID + "', '" + IDMiembroPrin + "');";
+            string query =
+                "INSERT INTO `valoracion` (`id_valoracion`, `mayor_puntaje`, `mas_visitaados`, `mas_bonitos`, `mas_seguros`, `mas_interesantes`, `actividad_fisica`, `idSitio`, `idUser`) VALUES (NULL, '"
+                + MayorPuntaje
+                + "', '1', '"
+                + MasBonitos
+                + "', '"
+                + MasSeguros
+                + "', '"
+                + MasInteresantes
+                + "', '"
+                + MayorActFisica
+                + "', '"
+                + SitioID
+                + "', '"
+                + IDMiembroPrin
+                + "');";
             Debug.Log(query);
-
 
             MS_Connection = new MySqlConnection(connectionString);
             MS_Connection.Open();

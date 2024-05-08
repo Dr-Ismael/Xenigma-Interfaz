@@ -1,10 +1,10 @@
-using MySql.Data.MySqlClient;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Security.Cryptography;
 using System.Text;
+using MySql.Data.MySqlClient;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,12 +24,20 @@ public class CrearClan : MonoBehaviour
 
     private MySqlDataReader MS_Reader;
 
-    [SerializeField] GameObject PantallaClan;
-    [SerializeField] GameObject MenuPrincipal;
-    [SerializeField] GameObject RegisClan;
-    [SerializeField] GameObject RegisMiembrosClan;
-    [SerializeField] GameObject EleccionDeJugadores;
+    [SerializeField]
+    GameObject PantallaClan;
 
+    [SerializeField]
+    GameObject MenuPrincipal;
+
+    [SerializeField]
+    GameObject RegisClan;
+
+    [SerializeField]
+    GameObject RegisMiembrosClan;
+
+    [SerializeField]
+    GameObject EleccionDeJugadores;
 
     private string emailG;
     private string passwordG;
@@ -44,15 +52,15 @@ public class CrearClan : MonoBehaviour
     public Login JalarId;
 
     public MostrarMiembrosClan TomarFuncion;
-    
+
     public SeleccionarJugadores TomarOtraFuncion;
 
+    public ConexionMySQL conexionMySQL;
 
     private void Start()
     {
-        connectionString = "Server=localhost;Port=3306;Database=Xenigmabd;User=XenigmaJuego;Password=OHfoUIt[gt7uHWJS;";
+        connectionString = conexionMySQL.connectionString;
         MySqlConnection connection = new MySqlConnection(connectionString);
-
         try
         {
             connection.Open();
@@ -70,78 +78,73 @@ public class CrearClan : MonoBehaviour
 
     public void CrearClanes()
     {
-            string query = "SELECT * FROM clanes where id_lider = '" + JalarId.resultadoID + "' ;";
+        string query = "SELECT * FROM clanes where id_lider = '" + JalarId.resultadoID + "' ;";
 
-            MS_Connection = new MySqlConnection(connectionString);
-            MS_Connection.Open();
+        MS_Connection = new MySqlConnection(connectionString);
+        MS_Connection.Open();
 
-            MS_Comand = new MySqlCommand(query, MS_Connection);
+        MS_Comand = new MySqlCommand(query, MS_Connection);
 
-            MS_Reader = MS_Comand.ExecuteReader();
-            while (MS_Reader.Read())
-            {
-                resultadoID = MS_Reader.GetString(2);
-                resultadoIDClan = MS_Reader.GetString(0);
+        MS_Reader = MS_Comand.ExecuteReader();
+        while (MS_Reader.Read())
+        {
+            resultadoID = MS_Reader.GetString(2);
+            resultadoIDClan = MS_Reader.GetString(0);
 
-                Debug.Log(resultadoID);
-                TengoElIDClan = resultadoID;
-            }
-
+            Debug.Log(resultadoID);
+            TengoElIDClan = resultadoID;
+        }
 
         MS_Reader.Close();
 
-            if (resultadoID == JalarId.resultadoID) 
-            {
-
-                Debug.Log("Tienes un clan");
-                MenuPrincipal.SetActive(false);
-                PantallaClan.SetActive(true);
-                TomarFuncion.Pintar();
-            }
-            else
-            {
-                RegisClan.SetActive(true);
-                MenuPrincipal.SetActive(false);
-                Debug.Log("No tienes ningun clan");
-            }
-
-        
+        if (resultadoID == JalarId.resultadoID)
+        {
+            Debug.Log("Tienes un clan");
+            MenuPrincipal.SetActive(false);
+            PantallaClan.SetActive(true);
+            TomarFuncion.Pintar();
+        }
+        else
+        {
+            RegisClan.SetActive(true);
+            MenuPrincipal.SetActive(false);
+            Debug.Log("No tienes ningun clan");
+        }
     }
 
     public void JugarClanes()
     {
         string query = "SELECT * FROM clanes where id_lider = '" + JalarId.resultadoID + "' ;";
 
-            MS_Connection = new MySqlConnection(connectionString);
-            MS_Connection.Open();
+        MS_Connection = new MySqlConnection(connectionString);
+        MS_Connection.Open();
 
-            MS_Comand = new MySqlCommand(query, MS_Connection);
+        MS_Comand = new MySqlCommand(query, MS_Connection);
 
-            MS_Reader = MS_Comand.ExecuteReader();
-            while (MS_Reader.Read())
-            {
-                resultadoID = MS_Reader.GetString(2);
-                resultadoIDClan = MS_Reader.GetString(0);
-                Debug.Log(resultadoID);
+        MS_Reader = MS_Comand.ExecuteReader();
+        while (MS_Reader.Read())
+        {
+            resultadoID = MS_Reader.GetString(2);
+            resultadoIDClan = MS_Reader.GetString(0);
+            Debug.Log(resultadoID);
 
-                // Establecer el valor de IDClan en PlayerPrefs
-                PlayerPrefs.SetString("IDClan", resultadoIDClan);
+            // Establecer el valor de IDClan en PlayerPrefs
+            PlayerPrefs.SetString("IDClan", resultadoIDClan);
         }
-            MS_Reader.Close();
+        MS_Reader.Close();
 
-            if (resultadoID == JalarId.resultadoID) 
-            {
-                Debug.Log("Adelante puedes jugar");
-                MenuPrincipal.SetActive(false);
-                EleccionDeJugadores.SetActive(true);
-                TomarOtraFuncion.Pintar();
-            }
-            else
-            {
-                Debug.Log("Necesitas un clan para poder jugar ¿deseas crear un clan?");
-            }
+        if (resultadoID == JalarId.resultadoID)
+        {
+            Debug.Log("Adelante puedes jugar");
+            MenuPrincipal.SetActive(false);
+            EleccionDeJugadores.SetActive(true);
+            TomarOtraFuncion.Pintar();
+        }
+        else
+        {
+            Debug.Log("Necesitas un clan para poder jugar ¿deseas crear un clan?");
+        }
     }
-    
 
     public void guardartodoslosdatos()
     {
@@ -150,47 +153,52 @@ public class CrearClan : MonoBehaviour
 
         string query = "SELECT * FROM clanes where NombreClan = '" + NombreClanG + "' ;";
 
-            MS_Connection = new MySqlConnection(connectionString);
-            MS_Connection.Open();
+        MS_Connection = new MySqlConnection(connectionString);
+        MS_Connection.Open();
 
-            MS_Comand = new MySqlCommand(query, MS_Connection);
+        MS_Comand = new MySqlCommand(query, MS_Connection);
 
-            MS_Reader = MS_Comand.ExecuteReader();
-            while (MS_Reader.Read())
-            {
-                resultadoNombreClan = MS_Reader.GetString(1);
-                Debug.Log(resultadoNombreClan);
-            }
-            MS_Reader.Close();
+        MS_Reader = MS_Comand.ExecuteReader();
+        while (MS_Reader.Read())
+        {
+            resultadoNombreClan = MS_Reader.GetString(1);
+            Debug.Log(resultadoNombreClan);
+        }
+        MS_Reader.Close();
 
-            if (NombreClanG == resultadoNombreClan)
-            {
-                Debug.Log("Ya existe un clan con ese nombre");
-            }
-            else
-            {
-                GuardarClan();
-            }
+        if (NombreClanG == resultadoNombreClan)
+        {
+            Debug.Log("Ya existe un clan con ese nombre");
+        }
+        else
+        {
+            GuardarClan();
+        }
     }
 
     public void GuardarClan()
     {
-            string query = "insert into clanes (id, NombreClan, id_lider, puntajeClan, lugaresClan, medallasClan, objetosClan, distanciaClan, hrsClan, miembros) VALUES (null,'"+ NombreClanG +"', '"+ JalarId.resultadoID +"', 0,0,0,0,0,0,0);";
+        string query =
+            "insert into clanes (id, NombreClan, id_lider, puntajeClan, lugaresClan, medallasClan, objetosClan, distanciaClan, hrsClan, miembros) VALUES (null,'"
+            + NombreClanG
+            + "', '"
+            + JalarId.resultadoID
+            + "', 0,0,0,0,0,0,0);";
 
-            MS_Connection = new MySqlConnection(connectionString);
-            MS_Connection.Open();
+        MS_Connection = new MySqlConnection(connectionString);
+        MS_Connection.Open();
 
-            MS_Comand = new MySqlCommand(query, MS_Connection);
+        MS_Comand = new MySqlCommand(query, MS_Connection);
 
-            MS_Reader = MS_Comand.ExecuteReader();
+        MS_Reader = MS_Comand.ExecuteReader();
 
-            Debug.Log("Registro exitoso");
+        Debug.Log("Registro exitoso");
 
-            crearLiderClan();
+        crearLiderClan();
 
         //Muestra la pantalla de miembros del clan
-            RegisClan.SetActive(false);
-            PantallaClan.SetActive(true);
+        RegisClan.SetActive(false);
+        PantallaClan.SetActive(true);
     }
 
     public void regresarPagPrincipal()
@@ -198,7 +206,6 @@ public class CrearClan : MonoBehaviour
         RegisClan.SetActive(false);
         RegisMiembrosClan.SetActive(false);
         MenuPrincipal.SetActive(true);
-        
     }
 
     public void crearLiderClan()
@@ -206,7 +213,10 @@ public class CrearClan : MonoBehaviour
         //Recupera el id del usuario principal
         string idUser = PlayerPrefs.GetString("idUser");
         //Recupera los datos del usuario principal
-        string queryUser = "SELECT nombre, nickname, edad, idAvatar, genero FROM users WHERE id = '" + idUser + "';";
+        string queryUser =
+            "SELECT nombre, nickname, edad, idAvatar, genero FROM users WHERE id = '"
+            + idUser
+            + "';";
 
         //Variables para guardar los datos del usuario previamente
         string nombre = "";
@@ -214,7 +224,7 @@ public class CrearClan : MonoBehaviour
         int edad = 0;
         int idAvatar = 0;
         string genero = "";
-        int idClan= 0;
+        int idClan = 0;
 
         //Conexion para recuperar los datos
         MS_Connection = new MySqlConnection(connectionString);
@@ -266,9 +276,23 @@ public class CrearClan : MonoBehaviour
         }
         MS_Reader.Close();
 
-
         //Ingreso el nuevo lider al clan
-        string queryNLider = "INSERT INTO `miembros_clanes` (`id_miembro`, `nombre`, `nickname`, `edad`, `idLider`, `idClan`, `idAvatar`, `puntaje`, `genero`, `lugares`, `hrs`, `medallas`, `coleccionables`, `distancia`, `Miem_Rango`) VALUES (NULL, '" + nombre + "', '" + nickname + "', '" + edad + "', '" + idUser + "', '" + idClan + "', '" + idAvatar + "', 0, '" + genero + "', 0, 0, 0, 0, 0, 'Lider');";
+        string queryNLider =
+            "INSERT INTO `miembros_clanes` (`id_miembro`, `nombre`, `nickname`, `edad`, `idLider`, `idClan`, `idAvatar`, `puntaje`, `genero`, `lugares`, `hrs`, `medallas`, `coleccionables`, `distancia`, `Miem_Rango`) VALUES (NULL, '"
+            + nombre
+            + "', '"
+            + nickname
+            + "', '"
+            + edad
+            + "', '"
+            + idUser
+            + "', '"
+            + idClan
+            + "', '"
+            + idAvatar
+            + "', 0, '"
+            + genero
+            + "', 0, 0, 0, 0, 0, 'Lider');";
         FuncionesClan.sumarMiembro();
 
         MS_Connection = new MySqlConnection(connectionString);
@@ -287,6 +311,28 @@ public class CrearClan : MonoBehaviour
 
         FuncionesClan.Pintar();
 
-        Debug.Log("Lider agregado correctamente" + "Datos del Registrado" + "Nombre:" + " " + nombre + " " + "Nickname:" + " " + nickname + "Edad:" + " " + edad + "ID Lider:" + " " + idUser + "ID Clan:" + " " + idClan + "ID Avatar:" + " " + idAvatar);
+        Debug.Log(
+            "Lider agregado correctamente"
+                + "Datos del Registrado"
+                + "Nombre:"
+                + " "
+                + nombre
+                + " "
+                + "Nickname:"
+                + " "
+                + nickname
+                + "Edad:"
+                + " "
+                + edad
+                + "ID Lider:"
+                + " "
+                + idUser
+                + "ID Clan:"
+                + " "
+                + idClan
+                + "ID Avatar:"
+                + " "
+                + idAvatar
+        );
     }
 }
