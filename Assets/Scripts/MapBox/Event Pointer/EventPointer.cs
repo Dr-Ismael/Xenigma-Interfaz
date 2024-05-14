@@ -93,7 +93,7 @@ public class EventPointer : MonoBehaviour
             connection.Close();
         }
 
-        menuUIManager = GameObject.Find("Canvas").GetComponent<MenuUIManager>();
+        menuUIManager = GameObject.Find("Interfaz Mapa").GetComponent<MenuUIManager>();
 
         // Find all objects with tag "spawneable" and set the _name text on each object
         GameObject[] spawnables = GameObject.FindGameObjectsWithTag("Spawnable");
@@ -154,7 +154,7 @@ public class EventPointer : MonoBehaviour
 
     private void OnMouseDown()
     {
-        playerLocation = GameObject.Find("Canvas").GetComponent<LocationStatus>();
+        playerLocation = GameObject.Find("Interfaz Mapa").GetComponent<LocationStatus>();
         var currentPlayerLocation = new GeoCoordinatePortable.GeoCoordinate(
             playerLocation.GetLocationLat(),
             playerLocation.GetLocationLon()

@@ -16,9 +16,6 @@ public class MenuUIManager : MonoBehaviour
     [SerializeField] private GameObject recomendacion;
     [SerializeField] private GameObject cercano;
 
-    
- 
-
     bool isUIPanelActive;
     bool isUILogroActivate;
     bool isUIAjustesActivate;

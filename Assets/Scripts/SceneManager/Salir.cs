@@ -15,15 +15,7 @@ public class Salir : MonoBehaviour
         // Espera durante 1 segundo antes de cerrar la aplicación
         yield return new WaitForSeconds(1);
 
-        // Si se está ejecutando en el editor de Unity, lo detiene
-        if (Application.isEditor)
-        {
-            UnityEditor.EditorApplication.isPlaying = false;
-        }
-        else
-        {
-            // Si no, entonces cierra la aplicación
-            Application.Quit();
-        }
+        // Si no, entonces cierra la aplicación
+        Application.Quit();
     }
 }
