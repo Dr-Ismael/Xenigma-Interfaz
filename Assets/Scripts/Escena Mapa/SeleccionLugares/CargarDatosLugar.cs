@@ -315,6 +315,7 @@ public class CargarDatosLugar : MonoBehaviour
         if (totalLugares.Contains(idLugar))
         {
             totalLugares.Remove(idLugar);
+            totalSitios.Remove(idLugar);
             numTotalLugares--;
             numTotalSitios--;
             txtTotalSitiosElegidos.text = numTotalSitios.ToString();
@@ -323,6 +324,7 @@ public class CargarDatosLugar : MonoBehaviour
         else if (totalMonumentos.Contains(idLugar))
         {
             totalMonumentos.Remove(idLugar);
+            totalSitios.Remove(idLugar);
             numTotalMonumentos--;
             numTotalSitios--;
             txtTotalSitiosElegidos.text = numTotalSitios.ToString();
@@ -331,6 +333,7 @@ public class CargarDatosLugar : MonoBehaviour
         else if (totalParques.Contains(idLugar))
         {
             totalParques.Remove(idLugar);
+            totalSitios.Remove(idLugar);
             numTotalParques--;
             numTotalSitios--;
             txtTotalSitiosElegidos.text = numTotalSitios.ToString();
@@ -339,6 +342,7 @@ public class CargarDatosLugar : MonoBehaviour
         else if (totalEstatuas.Contains(idLugar))
         {
             totalEstatuas.Remove(idLugar);
+            totalSitios.Remove(idLugar);
             numTotalEstatuas--;
             numTotalSitios--;
             txtTotalSitiosElegidos.text = numTotalSitios.ToString();
@@ -347,6 +351,7 @@ public class CargarDatosLugar : MonoBehaviour
         else if (totalObjetos.Contains(idLugar))
         {
             totalObjetos.Remove(idLugar);
+            totalSitios.Remove(idLugar);
             numTotalObjetos--;
             numTotalSitios--;
             txtTotalSitiosElegidos.text = numTotalSitios.ToString();
