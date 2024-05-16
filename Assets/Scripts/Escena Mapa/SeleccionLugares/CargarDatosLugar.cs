@@ -67,6 +67,20 @@ public class CargarDatosLugar : MonoBehaviour
         numTotalEstatuas,
         numTotalObjetos;
 
+    //Variables para guardar los prefabs generados en la lista de lugares seleccionados
+    public GameObject lugarSeleccionadoPrefab;
+    public Transform lugaresContenedor;
+
+    //Variables para panel de error
+    public TextMeshProUGUI toastText; // Variable para toast de elegir lugares
+    public float duration = 2.0f; // Duración del Toast
+    public GameObject PN_Error;
+    private Coroutine toastCoroutine;
+
+    //Pantallas varias
+    public GameObject ListaLugaresSeleccionados;
+    public GameObject FiltroLugares;
+
     //Conexion a MySQL
     public ConexionMySQL conexionMySQL;
     private string connectionString;
@@ -91,6 +105,15 @@ public class CargarDatosLugar : MonoBehaviour
         finally
         {
             connection.Close();
+        }
+    }
+
+    private void Awake()
+    {
+        if (toastText != null)
+        {
+            toastText.gameObject.SetActive(false);
+            PN_Error.gameObject.SetActive(false);
         }
     }
 
@@ -407,6 +430,135 @@ public class CargarDatosLugar : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void cargarLugaresElegidos()
+    {
+        //Comprueba si el usuario ha elegido al menos un sitio
+        if (totalSitios.Count == 0)
+        {
+            ShowToast("No has elegido ningun punto de interes");
+        }
+        else
+        {
+            Debug.Log("totalSitios tiene elementos: " + totalSitios.Count);
+            float posY = 79.8f; // variable para llevar un seguimiento de la posición Y
+            foreach (var idLugar in totalSitios)
+            {
+                foreach (var itemLugar in DatosLugares)
+                {
+                    if (itemLugar.id == idLugar)
+                    {
+                        GameObject lugarObject = Instantiate(
+                            lugarSeleccionadoPrefab,
+                            lugaresContenedor
+                        );
+
+                        // ajusta la posición Y del objeto utilizando la variable posY
+                        RectTransform rt = lugarObject.GetComponent<RectTransform>();
+                        rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, posY);
+
+                        TextMeshProUGUI nombreText = lugarObject
+                            .transform.Find("Txt_Lugar")
+                            .GetComponent<TextMeshProUGUI>();
+                        nombreText.text = itemLugar.nombre;
+
+                        // obtener el componente Button y agregarle un listener
+                        Button btn_Subir = lugarObject
+                            .transform.Find("Btn_Subir")
+                            .GetComponent<Button>();
+                        btn_Subir.onClick.AddListener(() => subirElementoLista(itemLugar.id));
+
+                        // obtener el componente Button y agregarle un listener
+                        Button btn_Bajar = lugarObject
+                            .transform.Find("Btn_Bajar")
+                            .GetComponent<Button>();
+                        btn_Bajar.onClick.AddListener(() => bajarElementoLista(itemLugar.id));
+
+                        // aumenta el valor de posY en el espaciado deseado
+                        posY -= 210f;
+                    }
+                }
+            }
+            ListaLugaresSeleccionados.SetActive(true);
+            FiltroLugares.SetActive(false);
+        }
+    }
+
+    public void subirElementoLista(int idLugar)
+    {
+        // Encuentra el índice del número en la lista
+        int indiceActual = totalSitios.IndexOf(idLugar);
+
+        // Verifica que el índice no es -1 (el número no está en la lista) y que no es el primero
+        if (indiceActual > 0)
+        {
+            // Intercambia el número con el elemento anterior en la lista
+            int elementoAnterior = totalSitios[indiceActual - 1];
+            totalSitios[indiceActual - 1] = idLugar;
+            totalSitios[indiceActual] = elementoAnterior;
+
+            //Recargo la lista que se muestra al usuario
+            lugaresContenedor.DetachChildren();
+            cargarLugaresElegidos();
+
+            // Opcional: imprime la lista para depuración
+            Debug.Log("Lista después del movimiento: " + string.Join(", ", totalSitios));
+        }
+        else
+        {
+            Debug.Log("El número no se puede mover o ya está en la primera posición.");
+        }
+    }
+
+    public void bajarElementoLista(int idLugar)
+    {
+        // Encuentra el índice del número en la lista
+        int indiceActual = totalSitios.IndexOf(idLugar);
+
+        // Verifica que el índice no es -1 (el número no está en la lista) y que no es el último
+        if (indiceActual != -1 && indiceActual < totalSitios.Count - 1)
+        {
+            // Intercambia el número con el elemento siguiente en la lista
+            int elementoSiguiente = totalSitios[indiceActual + 1];
+            totalSitios[indiceActual + 1] = idLugar;
+            totalSitios[indiceActual] = elementoSiguiente;
+
+            // Recargo la lista que se muestra al usuario
+            lugaresContenedor.DetachChildren();
+            cargarLugaresElegidos();
+
+            // Opcional: imprime la lista para depuración
+            Debug.Log("Lista después del movimiento: " + string.Join(", ", totalSitios));
+        }
+        else
+        {
+            Debug.Log("El número no se puede mover o ya está en la última posición.");
+        }
+    }
+
+    public void ShowToast(string message)
+    {
+        if (toastText != null)
+        {
+            if (toastCoroutine != null)
+            {
+                StopCoroutine(toastCoroutine);
+            }
+            toastCoroutine = StartCoroutine(ShowToastCoroutine(message));
+        }
+    }
+
+    private IEnumerator ShowToastCoroutine(string message)
+    {
+        toastText.text = message;
+        toastText.gameObject.SetActive(true);
+        PN_Error.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(duration);
+
+        toastText.gameObject.SetActive(false);
+        PN_Error.gameObject.SetActive(false);
     }
 
     public void limpiarRegistros()
