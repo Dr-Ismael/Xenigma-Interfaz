@@ -26,7 +26,7 @@ public class CargarDatosLugar : MonoBehaviour
     //Lista que guarda los lugares seleccionados por el usuario
 
     [SerializeField]
-    private List<int> totalSitios = new List<int>();
+    public List<int> totalSitios = new List<int>();
 
     [SerializeField]
     private List<int> totalLugares = new List<int>();
@@ -499,7 +499,7 @@ public class CargarDatosLugar : MonoBehaviour
             totalSitios[indiceActual] = elementoAnterior;
 
             //Recargo la lista que se muestra al usuario
-            lugaresContenedor.DetachChildren();
+            ClearChildren();
             cargarLugaresElegidos();
 
             // Opcional: imprime la lista para depuración
@@ -525,7 +525,7 @@ public class CargarDatosLugar : MonoBehaviour
             totalSitios[indiceActual] = elementoSiguiente;
 
             // Recargo la lista que se muestra al usuario
-            lugaresContenedor.DetachChildren();
+            ClearChildren();
             cargarLugaresElegidos();
 
             // Opcional: imprime la lista para depuración
@@ -581,6 +581,16 @@ public class CargarDatosLugar : MonoBehaviour
         txtTotalObjetos.text = "0";
         txtTotalParques.text = "0";
         txtTotalSitiosElegidos.text = "0";
+    }
+
+     // Método para eliminar todos los hijos del contenedor
+    public void ClearChildren()
+    {
+        // Iterar sobre los hijos y destruirlos
+        foreach (Transform child in lugaresContenedor)
+        {
+            Destroy(child.gameObject);
+        }
     }
 }
 

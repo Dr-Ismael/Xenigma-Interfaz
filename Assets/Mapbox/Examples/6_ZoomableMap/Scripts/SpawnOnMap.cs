@@ -1,10 +1,10 @@
-﻿using UnityEngine;
-using Mapbox.Utils;
+﻿using System.Collections.Generic;
+using System.Text;
 using Mapbox.Unity.Map;
 using Mapbox.Unity.MeshGeneration.Factories;
 using Mapbox.Unity.Utilities;
-using System.Collections.Generic;
-using System.Text;
+using Mapbox.Utils;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class SpawnOnMap : MonoBehaviour
@@ -16,17 +16,24 @@ public class SpawnOnMap : MonoBehaviour
     [Geocode]
     string[] _locationStrings;
     Vector2d[] _locations;
-    [SerializeField] Text _list;
-    [SerializeField] Text _lugares;
+
+    [SerializeField]
+    Text _list;
+
+    [SerializeField]
+    Text _lugares;
 
     [SerializeField]
     float _spawnScale = 100f;
 
-
     [SerializeField]
     GameObject _markerPrefab;
-    [SerializeField] private Dropdown _dropdown;
-    [SerializeField] private Dropdown _dropdown2;
+
+    [SerializeField]
+    private Dropdown _dropdown;
+
+    [SerializeField]
+    private Dropdown _dropdown2;
 
     List<GameObject> _spawnedObjects;
 
@@ -37,6 +44,8 @@ public class SpawnOnMap : MonoBehaviour
     bool _showHistoric = false;
     bool _showObj = true;
 
+    //Clase que contiene las listas de puntos de interes elegidos
+    public CargarDatosLugar lugaresElegidos;
 
     private int selectedEventID = -1;
     private const string SpawnedObjectsKey = "SpawnedObjects";
@@ -80,7 +89,6 @@ public class SpawnOnMap : MonoBehaviour
         _dropdown2.onValueChanged.AddListener(DropdownValue);
     }
 
-
     private void SaveSpawnedObjects()
     {
         // Lista para almacenar los datos de los objetos spawnados
@@ -98,7 +106,8 @@ public class SpawnOnMap : MonoBehaviour
                 var scale = spawnedObject.transform.localScale;
 
                 // Crear una cadena de datos que contiene la posición, rotación y escala del objeto
-                var data = $"{position.x},{position.y},{position.z}|{rotation.x},{rotation.y},{rotation.z},{rotation.w}|{scale.x},{scale.y},{scale.z}";
+                var data =
+                    $"{position.x},{position.y},{position.z}|{rotation.x},{rotation.y},{rotation.z},{rotation.w}|{scale.x},{scale.y},{scale.z}";
 
                 // Agregar los datos del objeto a la lista
                 spawnedObjectsData.Add(data);
@@ -133,9 +142,22 @@ public class SpawnOnMap : MonoBehaviour
                 var scaleParts = parts[2].Split(',');
 
                 // Convertir las partes en vectores y cuaterniones
-                var position = new Vector3(float.Parse(positionParts[0]), float.Parse(positionParts[1]), float.Parse(positionParts[2]));
-                var rotation = new Quaternion(float.Parse(rotationParts[0]), float.Parse(rotationParts[1]), float.Parse(rotationParts[2]), float.Parse(rotationParts[3]));
-                var scale = new Vector3(float.Parse(scaleParts[0]), float.Parse(scaleParts[1]), float.Parse(scaleParts[2]));
+                var position = new Vector3(
+                    float.Parse(positionParts[0]),
+                    float.Parse(positionParts[1]),
+                    float.Parse(positionParts[2])
+                );
+                var rotation = new Quaternion(
+                    float.Parse(rotationParts[0]),
+                    float.Parse(rotationParts[1]),
+                    float.Parse(rotationParts[2]),
+                    float.Parse(rotationParts[3])
+                );
+                var scale = new Vector3(
+                    float.Parse(scaleParts[0]),
+                    float.Parse(scaleParts[1]),
+                    float.Parse(scaleParts[2])
+                );
 
                 // Instanciar el objeto en la escena con los datos obtenidos
                 var spawnedObject = Instantiate(_markerPrefab, position, rotation, transform);
@@ -149,12 +171,10 @@ public class SpawnOnMap : MonoBehaviour
         }
     }
 
-
     private void OnDestroy()
     {
         SaveSpawnedObjects(); // Guardar los objetos al salir de la escena
     }
-
 
     public void DropdownValueChanged(Dropdown change)
     {
@@ -222,7 +242,6 @@ public class SpawnOnMap : MonoBehaviour
         _list.text = sb.ToString();
     }
 
-
     private string GetObjectName(int eventID)
     {
         string objectName = "";
@@ -232,88 +251,109 @@ public class SpawnOnMap : MonoBehaviour
                 objectName = "La loma";
                 break;
             case 2:
-                objectName = "La Alameda";
+                objectName = "Estatua de Esteban Baca Calderón";
                 break;
             case 3:
-                objectName = "Parque juan escutia";
+                objectName = "Estatua de Francisco Villa";
                 break;
             case 4:
-                objectName = "Parque a la madre";
+                objectName = "Reloj solar de la Loma";
                 break;
             case 5:
-                objectName = "Plaza bicentenario";
+                objectName = "Concha acústica/ teatro al aire libre Amado Nervo";
                 break;
             case 6:
-                objectName = "La hermana agua";
+                objectName = "Lienzo Charro “Francisco García Montero”";
                 break;
             case 7:
-                objectName = "Monumento a Emilio M. Gonzalez";
+                objectName = "Francisco García Montero";
                 break;
             case 8:
-                objectName = "Monumento a Benardo Macias Mora";
+                objectName = "Alameda";
                 break;
             case 9:
-                objectName = "Columna de la pacificacion";
+                objectName = "Parque Juan Escutia";
                 break;
             case 10:
-                objectName = "Monumento Amado Nervo";
+                objectName = "Parque a la madre (Jardín Azcona)";
                 break;
             case 11:
-                objectName = "Ángel de la independencia";
+                objectName = "Plaza Bicentenario (Jardín San Román) (estatua de Benito Juárez)";
                 break;
             case 12:
-                objectName = "Monumento de Antonio Rivas Mercado";
+                objectName = "La hermana agua";
                 break;
             case 13:
-                objectName = "Estatua Rey Nayar";
+                objectName = "Monumento Emilio M. González";
                 break;
             case 14:
-                objectName = "Muro de los periodistas";
+                objectName = "Estatua homenaje a Bernardo Macías Mora";
                 break;
             case 15:
-                objectName = "Monumento a Manuel Lozada";
+                objectName = "Columna de la Pacificación";
                 break;
             case 16:
-                objectName = "Palacio de gobierno";
+                objectName = "Monumento Amado Nervo (Plaza Principal)";
                 break;
             case 17:
-                objectName = "Hotel Sierra de Álica";
+                objectName = "Monumento a arquitecto rivas creador del angel de la independicia";
                 break;
             case 18:
-                objectName = "Estacion de tren";
+                objectName = "Monumento de Antonio Rivas Mercado";
                 break;
             case 19:
-                objectName = "Palacio municipal de Tepic";
+                objectName = "Estatua Rey Nayar";
                 break;
             case 20:
-                objectName = "Teatro Calderon";
+                objectName = "Muro de los periodistas";
                 break;
             case 21:
-                objectName = "Teatro del pueblo Alí Chumacero";
+                objectName = "Manuel Lozada";
                 break;
             case 22:
-                objectName = "Catedral";
+                objectName = "Palacio de gobierno";
                 break;
             case 23:
-                objectName = "Cecupi";
+                objectName = "Hotel sierra de álica Tepic/ Hospital de indios de san lázaro Tepic";
                 break;
             case 24:
-                objectName = "CICESE-UT3";
+                objectName = "Estación de tren";
                 break;
             case 25:
-                objectName = "Centro de arte contemporaneo Emilia Ortiz";
+                objectName = "Teatro Calderón (Cine Amado Nervo)";
                 break;
             case 26:
-                objectName = "Casa museo Amado Nervo";
+                objectName = "Teatro del Pueblo Alí Chumacero";
                 break;
             case 27:
-                objectName = "Casa museo Juan Escutia";
+                objectName = "Alí chumacero";
                 break;
             case 28:
-                objectName = "Museo regional centro INAH";
+                objectName = "Catedral";
                 break;
             case 29:
-                objectName = "";
+                objectName = "CECUPI (ex Hotel Palacio)";
+                break;
+            case 30:
+                objectName = "Centro de Arte Contemporáneo Emilia Ortiz";
+                break;
+            case 31:
+                objectName = "Casa Museo Amado Nervo";
+                break;
+            case 32:
+                objectName = "Casa Museo Juan Escutia";
+                break;
+            case 33:
+                objectName = "Museo Regional Centro INAH";
+                break;
+            case 34:
+                objectName = "Ex-Fábrica Textil de Bellavista";
+                break;
+            case 35:
+                objectName = "Casa Fenelón";
+                break;
+            case 36:
+                objectName = "Luis Ernesto Miramontes";
                 break;
         }
         return objectName;
@@ -325,7 +365,8 @@ public class SpawnOnMap : MonoBehaviour
         switch (eventID)
         {
             case 1:
-                objectDescripcion = "es un punto de convivencia de mayor importancia para los nayaritas donde se pueden encontrar juegos y el famoso trenecito";
+                objectDescripcion =
+                    "Es un punto de convivencia de mayor importancia para los nayaritas donde se pueden encontrar juegos y el famoso trenecito";
                 break;
             case 2:
                 objectDescripcion = "Parque iconico de la ciudad de tepic";
@@ -334,13 +375,16 @@ public class SpawnOnMap : MonoBehaviour
                 objectDescripcion = "Parque al niño heroe juan escutia";
                 break;
             case 4:
-                objectDescripcion = "el H. Ayuntamiento de Tepic, había realizado un evento en el espacio creado (en los años cincuenta del siglo pasado) para honrar a la Madre,";
+                objectDescripcion =
+                    "El H. Ayuntamiento de Tepic, había realizado un evento en el espacio creado (en los años cincuenta del siglo pasado) para honrar a la Madre,";
                 break;
             case 5:
-                objectDescripcion = "es el espacio que se localiza frente al Palacio de Gobierno. Además, el cual correspondió a la manzana número 120 en la segunda mitad del siglo XIX, fue comprado en 500 pesos y donada a la ciudad en 1870 por el primer jefe político del Distrito Militar de Tepic Juan de Sanromán, con la finalidad de darle un mayor atractivo visual a la entonces Penitenciaria, hoy sede del Poder Ejecutivo del Estado.";
+                objectDescripcion =
+                    "Es el espacio que se localiza frente al Palacio de Gobierno. Además, el cual correspondió a la manzana número 120 en la segunda mitad del siglo XIX, fue comprado en 500 pesos y donada a la ciudad en 1870 por el primer jefe político del Distrito Militar de Tepic Juan de Sanromán, con la finalidad de darle un mayor atractivo visual a la entonces Penitenciaria, hoy sede del Poder Ejecutivo del Estado.";
                 break;
             case 6:
-                objectDescripcion = "una figura estilizada de una mujer desnuda y muy hermosa delante de un muro en el que por su parte posterior se leía un fragmento del poema del mismo nombre del recordado poeta nayarita Amado Nervo; precisamente, se dice, este poema fue la inspiración para la creación de la escultura de la Hermana Agua. Fue tan conocida que se tomaba como punto de referencia en la ciudad.";
+                objectDescripcion =
+                    "Una figura estilizada de una mujer desnuda y muy hermosa delante de un muro en el que por su parte posterior se leía un fragmento del poema del mismo nombre del recordado poeta nayarita Amado Nervo; precisamente, se dice, este poema fue la inspiración para la creación de la escultura de la Hermana Agua. Fue tan conocida que se tomaba como punto de referencia en la ciudad.";
                 break;
             case 7:
                 objectDescripcion = "Monumento a Emilio M. Gonzalez";
@@ -394,7 +438,8 @@ public class SpawnOnMap : MonoBehaviour
                 objectDescripcion = "Cecupi";
                 break;
             case 24:
-                objectDescripcion = "Esta es la Unidad de Transferencia Tecnológica Tepic del Centro de Investigación Científica y de Educación Superior de Ensenada (CICESE-UT3). Realizamos investigación aplicada en el área de las Tecnologías de la Información y Comunicación (TIC), y generamos desarrollos tecnológicos.";
+                objectDescripcion =
+                    "Esta es la Unidad de Transferencia Tecnológica Tepic del Centro de Investigación Científica y de Educación Superior de Ensenada (CICESE-UT3). Realizamos investigación aplicada en el área de las Tecnologías de la Información y Comunicación (TIC), y generamos desarrollos tecnológicos.";
                 break;
             case 25:
                 objectDescripcion = "Centro de arte contemporaneo Emilia Ortiz";
@@ -411,24 +456,54 @@ public class SpawnOnMap : MonoBehaviour
             case 29:
                 objectDescripcion = "";
                 break;
-
+            case 30:
+                objectDescripcion = "";
+                break;
+            case 31:
+                objectDescripcion = "";
+                break;
+            case 32:
+                objectDescripcion = "";
+                break;
+            case 33:
+                objectDescripcion = "";
+                break;
+            case 34:
+                objectDescripcion = "";
+                break;
+            case 35:
+                objectDescripcion = "";
+                break;
+            case 36:
+                objectDescripcion = "";
+                break;
         }
         return objectDescripcion;
     }
+
     private void Update()
     {
         EventShow();
         ShowVisibleObjects();
 
-        _list.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, _list.preferredHeight);
+        _list.rectTransform.SetSizeWithCurrentAnchors(
+            RectTransform.Axis.Vertical,
+            _list.preferredHeight
+        );
     }
 
     public void EventShow()
     {
         // Verificar si los arrays están nulos o tienen longitudes diferentes
-        if (_spawnedObjects == null || _locations == null || _spawnedObjects.Count != _locations.Length)
+        if (
+            _spawnedObjects == null
+            || _locations == null
+            || _spawnedObjects.Count != _locations.Length
+        )
         {
-            Debug.LogError("Los arrays _spawnedObjects y _locations son nulos o tienen longitudes diferentes.");
+            Debug.LogError(
+                "Los arrays _spawnedObjects y _locations son nulos o tienen longitudes diferentes."
+            );
             return;
         }
 
@@ -445,7 +520,9 @@ public class SpawnOnMap : MonoBehaviour
             // Verificar si el índice está dentro de los límites del arreglo _locations
             if (i >= _locations.Length)
             {
-                Debug.LogError("No hay ubicación válida para el objeto spawnado en la posición " + i + ".");
+                Debug.LogError(
+                    "No hay ubicación válida para el objeto spawnado en la posición " + i + "."
+                );
                 continue;
             }
 
@@ -457,11 +534,11 @@ public class SpawnOnMap : MonoBehaviour
             // Aplicar los filtros de acuerdo al eventoID
             var eventID = spawnedObject.GetComponent<EventPointer>().eventID;
             spawnedObject.SetActive(
-                (_showParks && eventID >= 1 && eventID <= 5) ||
-                (_showMuseums && eventID >= 25 && eventID <= 28) ||
-                (_showStatues && eventID >= 6 && eventID <= 15) ||
-                (_showHistoric && eventID >= 16 && eventID <= 24) ||
-                (_showObj && eventID == 29)
+                (_showParks && eventID >= 1 && eventID <= 5)
+                    || (_showMuseums && eventID >= 25 && eventID <= 28)
+                    || (_showStatues && eventID >= 6 && eventID <= 15)
+                    || (_showHistoric && eventID >= 16 && eventID <= 24)
+                    || (_showObj && eventID == 37)
             );
 
             // Construir la cadena de filtros activos
@@ -485,10 +562,100 @@ public class SpawnOnMap : MonoBehaviour
             string activeFilters = activeFiltersBuilder.ToString();
 
             // Actualizar el texto mostrando los filtros activos
-            _lugares.text = "Vas a visitar: " + activeFilters + ".\n\n Antes de comenzar la ruta, asegúrate de llevarte tennis y suficiente agua.";
+            _lugares.text =
+                "Vas a visitar: "
+                + activeFilters
+                + ".\n\n Antes de comenzar la ruta, asegúrate de llevarte tennis y suficiente agua.";
         }
     }
 
+    public void NewEventShow()
+    {
+        // Verificar si los arrays están nulos o tienen longitudes diferentes
+        if (
+            _spawnedObjects == null
+            || _locations == null
+            || _spawnedObjects.Count != _locations.Length
+        )
+        {
+            Debug.LogError(
+                "Los arrays _spawnedObjects y _locations son nulos o tienen longitudes diferentes."
+            );
+            return;
+        }
+
+        Debug.Log("Comenzando NewEventShow()");
+        Debug.Log("Total de sitios seleccionados: " + lugaresElegidos.totalSitios.Count);
+
+        int count = _spawnedObjects.Count;
+        for (int i = 0; i < count; i++)
+        {
+            // Verificar si el índice está dentro de los límites del arreglo _spawnedObjects
+            if (i >= _spawnedObjects.Count)
+            {
+                Debug.LogError("Index out of range: " + i);
+                continue;
+            }
+
+            // Verificar si el índice está dentro de los límites del arreglo _locations
+            if (i >= _locations.Length)
+            {
+                Debug.LogError(
+                    "No hay ubicación válida para el objeto spawnado en la posición " + i + "."
+                );
+                continue;
+            }
+
+            var spawnedObject = _spawnedObjects[i];
+            var location = _locations[i];
+            spawnedObject.transform.localPosition = _map.GeoToWorldPosition(location, false);
+            spawnedObject.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
+
+            // Obtener el ID del evento del objeto
+            var eventID = spawnedObject.GetComponent<EventPointer>().eventID;
+            Debug.Log("ID del evento: " + eventID);
+
+            // Verificar si el ID del evento está en la lista totalSitios
+            if (lugaresElegidos.totalSitios.Contains(eventID))
+            {
+                // Activar el objeto si el ID coincide
+                spawnedObject.SetActive(true);
+                Debug.Log("Objeto activado: " + spawnedObject.name);
+            }
+            else
+            {
+                // Desactivar el objeto si el ID no coincide
+                spawnedObject.SetActive(false);
+                Debug.Log("Objeto desactivado: " + spawnedObject.name);
+            }
+
+            // Construir la cadena de filtros activos
+            StringBuilder activeFiltersBuilder = new StringBuilder();
+
+            if (_showParks)
+                activeFiltersBuilder.Append("Parques, ");
+            if (_showMuseums)
+                activeFiltersBuilder.Append("Museos, ");
+            if (_showStatues)
+                activeFiltersBuilder.Append("Estatuas, ");
+            if (_showHistoric)
+                activeFiltersBuilder.Append("Lugares históricos, ");
+            if (_showObj)
+                activeFiltersBuilder.Append("");
+
+            // Eliminar la última coma y espacio de la cadena de filtros activos
+            if (activeFiltersBuilder.Length > 0)
+                activeFiltersBuilder.Length -= 2;
+
+            string activeFilters = activeFiltersBuilder.ToString();
+
+            // Actualizar el texto mostrando los filtros activos
+            _lugares.text =
+                "Vas a visitar: "
+                + activeFilters
+                + ".\n\n Antes de comenzar la ruta, asegúrate de llevarte tennis y suficiente agua.";
+        }
+    }
 
     public void DisableEventShow()
     {
@@ -496,7 +663,7 @@ public class SpawnOnMap : MonoBehaviour
         foreach (var obj in _spawnedObjects)
         {
             var eventPointer = obj.GetComponent<EventPointer>();
-            if (eventPointer.eventID == 29 && obj.activeSelf)
+            if (eventPointer.eventID == 37 && obj.activeSelf)
             {
                 obj.SetActive(false);
                 _spawnedObjects.Remove(obj);
@@ -549,6 +716,4 @@ public class SpawnOnMap : MonoBehaviour
     {
         _showObj = value;
     }
-
-
 }

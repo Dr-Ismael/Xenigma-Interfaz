@@ -21250,42 +21250,49 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _map: {fileID: 437881718}
   _locationStrings:
-  - 21.50429661639384, -104.89942464712443
-  - 21.511222664116747, -104.90024105963192
-  - 21.51299936506007, -104.89970461780784
-  - 21.510613789696336, -104.89704386636032
-  - 21.50737313089071, -104.89283773871989
-  - 21.50281138064888, -104.89608857617984
-  - 21.51435840134914, -104.89876176128277
-  - 21.5123177632138, -104.89174345592119
-  - 21.512227170628197, -104.89184429824832
-  - 21.504653997863777, -104.89971604205137
-  - 21.490343813201186, -104.87855000381464
-  - 21.491050293505726, -104.87829126760415
-  - 21.485287142855352, -104.87675820453197
-  - 21.512181533493145, -104.89262990342961
-  - 21.470867979748277, -104.84883632440813
-  - 21.5075136665142, -104.89384385264421
-  - 21.511425372128542, -104.89173105963198
-  - 21.503363759101855, -104.8817925835761
-  - 21.512692895840622, -104.8929279559212
-  - 22.77501466232414, -102.57322445722362
-  - 21.476972631853407, -104.84824252142225
-  - 21.515022297322204, -104.898787506106
-  - 21.51211226481886, -104.8915414208919
-  - 21.484664486003012, -104.84874264367373
-  - 21.508279954093226, -104.89223936952587
-  - 21.510844264428876, -104.8912818694118
-  - 21.512477664544758, -104.89050337625638
-  - 21.51052212237922, -104.89084621164326
-  - 21.51004989154445, -104.89242710113476
-  - 21.484607501811507, -104.8490304653486
+  - 21.5038800196947, -104.89877306463993
+  - 21.5038800196947, -104.89877306463993
+  - 21.503600630909503, -104.89866071221256
+  - 21.504987288289417, -104.89772409834535
+  - 21.505195322990065, -104.89975306257148
+  - 21.50374560372818, -104.90190859376328
+  - 21.489565815395046, -104.89258267725897
+  - 21.51113072195819, -104.90019980370111
+  - 21.51287680542355, -104.89961692741835
+  - 21.51053867304131, -104.89698368571197
+  - 21.507238562196644, -104.8930757151247
+  - 21.50268492768691, -104.89615554661964
+  - 21.514386618064304, -104.89876127002245
+  - 21.51220137505616, -104.89186433506437
+  - 21.512065232868377, -104.8919925093213
+  - 21.512491118988034, -104.8925263479254
+  - 21.490227542057806, -104.87844042306742
+  - 21.4904459232928, -104.87837686839318
+  - 21.48497709731337, -104.87668193095567
+  - 21.512180093647046, -104.89263624832654
+  - 21.470903860065896, -104.84884810302535
+  - 21.50700973895438, -104.89406565723003
+  - 21.51134082380943, -104.89169649463791
+  - 21.50351649264514, -104.88197303880233
+  - 21.511086163295698, -104.89272252624485
+  - 21.514830774772754, -104.89877725384628
+  - 21.514830774772754, -104.89877725384628
+  - 21.51206183006414, -104.8915442948035
+  - 21.5108532356403, -104.89173812965896
+  - 21.510844959434195, -104.89172843194737
+  - 21.512466161923584, -104.89047140402636
+  - 21.51046505667792, -104.89081071178187
+  - 21.51003730862149, -104.89242056429553
+  - 21.564433320980733, -104.88298641394124
+  - 21.51103541244337, -104.89056098088984
+  - 21.512225933430695, -104.89170660881553
   _list: {fileID: 1996973412}
   _lugares: {fileID: 847623013}
   _spawnScale: 100
   _markerPrefab: {fileID: 7489466698497941904, guid: e17a6960e0dad514ba115684902a8c24, type: 3}
   _dropdown: {fileID: 1752944377}
   _dropdown2: {fileID: 442905439}
+  lugaresElegidos: {fileID: 407414366}
 --- !u!4 &643176277
 Transform:
   m_ObjectHideFlags: 0
@@ -28345,7 +28352,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114658503893516242, guid: 35ce2bb4caba9434db5e656796b632b1, type: 3}
       propertyPath: _latitudeLongitude.Array.data[0]
-      value: 21.48503691657044, -104.84846525552433
+      value: 21.48466609731337, -104.87668193095567
       objectReference: {fileID: 0}
     - target: {fileID: 135296336305408694, guid: 35ce2bb4caba9434db5e656796b632b1, type: 3}
       propertyPath: m_IsTrigger
@@ -49593,9 +49600,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 605978924}
-        m_TargetAssemblyTypeName: UnityEngine.Transform, UnityEngine
-        m_MethodName: DetachChildren
+      - m_Target: {fileID: 407414366}
+        m_TargetAssemblyTypeName: CargarDatosLugar, Assembly-CSharp
+        m_MethodName: ClearChildren
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -63502,6 +63509,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 643176276}
+        m_TargetAssemblyTypeName: SpawnOnMap, Assembly-CSharp
+        m_MethodName: NewEventShow
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
       - m_Target: {fileID: 1874108714}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -63530,6 +63549,42 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1220223453}
+        m_TargetAssemblyTypeName: MenuUIManager, Assembly-CSharp
+        m_MethodName: Displayfiltros
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1220223453}
+        m_TargetAssemblyTypeName: MenuUIManager, Assembly-CSharp
+        m_MethodName: DisplayfiltrosValoracion
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 407414366}
+        m_TargetAssemblyTypeName: CargarDatosLugar, Assembly-CSharp
+        m_MethodName: ClearChildren
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

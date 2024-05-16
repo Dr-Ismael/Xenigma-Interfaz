@@ -10,7 +10,7 @@ public class MenuUIManager : MonoBehaviour
     [SerializeField] private GameObject evento_logro;
     [SerializeField] private GameObject EventoAjustes;
     [SerializeField] private GameObject user;
-    [SerializeField] private GameObject filro_mapas;
+    //[SerializeField] private GameObject filro_mapas;
     [SerializeField] private GameObject filro_valoracion;
     [SerializeField] private SpawnOnMap spawnOnMap;
     [SerializeField] private GameObject recomendacion;
@@ -135,7 +135,7 @@ public class MenuUIManager : MonoBehaviour
         if(isfiltro == false && isfilval==false)
         {
             eventPanelUserNotInRange.SetActive(false);
-            filro_mapas.SetActive(false);
+            //filro_mapas.SetActive(false);
             isfilval = false;
             isfiltro = true;
 
@@ -144,7 +144,7 @@ public class MenuUIManager : MonoBehaviour
         }
         else
         {
-            filro_mapas.SetActive(true); 
+            //filro_mapas.SetActive(true); 
             isfiltro = false; 
         }
     }
@@ -152,7 +152,6 @@ public class MenuUIManager : MonoBehaviour
     public void DisplayfiltrosValoracion()
     {
         if(isfiltro == false && isfilval==false)
-        
         {
             eventPanelUserNotInRange.SetActive(false);
             filro_valoracion.SetActive(false);
