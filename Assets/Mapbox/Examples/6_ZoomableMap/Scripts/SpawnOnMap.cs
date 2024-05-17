@@ -4,6 +4,7 @@ using Mapbox.Unity.Map;
 using Mapbox.Unity.MeshGeneration.Factories;
 using Mapbox.Unity.Utilities;
 using Mapbox.Utils;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +19,7 @@ public class SpawnOnMap : MonoBehaviour
     Vector2d[] _locations;
 
     [SerializeField]
-    Text _list;
+    TextMeshProUGUI _list;
 
     [SerializeField]
     Text _lugares;
@@ -29,13 +30,21 @@ public class SpawnOnMap : MonoBehaviour
     [SerializeField]
     GameObject _markerPrefab;
 
-    [SerializeField]
-    private Dropdown _dropdown;
-
-    [SerializeField]
-    private Dropdown _dropdown2;
-
+    /*
+        [SerializeField]
+        private Dropdown _dropdown;
+    
+        [SerializeField]
+        private Dropdown _dropdown2;
+    */
     List<GameObject> _spawnedObjects;
+
+    //Lista de objetos para generar la lista en el menu desplegable
+    public GameObject puntoInteresRutaPrefab;
+    public Transform listaDesplegableContenedor;
+
+    public TextMeshProUGUI txtTotalPuntosRuta;
+    public TextMeshProUGUI txtNumRuta;
 
     // Variables para los filtros
     bool _showParks = false;
@@ -77,16 +86,17 @@ public class SpawnOnMap : MonoBehaviour
 
             options.Add(new Dropdown.OptionData(GetObjectName(i + 1)));
         }
-
-        // Configurar las opciones del primer Dropdown
-        _dropdown.ClearOptions();
-        _dropdown.AddOptions(options);
-        _dropdown.onValueChanged.AddListener(OnDropdownValueChanged);
-
-        // Configurar las opciones del segundo Dropdown
-        _dropdown2.ClearOptions();
-        _dropdown2.AddOptions(options);
-        _dropdown2.onValueChanged.AddListener(DropdownValue);
+        /*
+                // Configurar las opciones del primer Dropdown
+                _dropdown.ClearOptions();
+                _dropdown.AddOptions(options);
+                _dropdown.onValueChanged.AddListener(OnDropdownValueChanged);
+        
+                // Configurar las opciones del segundo Dropdown
+                _dropdown2.ClearOptions();
+                _dropdown2.AddOptions(options);
+                _dropdown2.onValueChanged.AddListener(DropdownValue);
+                */
     }
 
     private void SaveSpawnedObjects()
@@ -176,48 +186,49 @@ public class SpawnOnMap : MonoBehaviour
         SaveSpawnedObjects(); // Guardar los objetos al salir de la escena
     }
 
-    public void DropdownValueChanged(Dropdown change)
-    {
-        selectedEventID = change.value + 1;
-    }
-
-    private void OnDropdownValueChanged(int index)
-    {
-        // Obtener el evento seleccionado y mostrar su objeto
-        var eventName = _dropdown.options[index].text;
-        foreach (var obj in _spawnedObjects)
+    /*
+        public void DropdownValueChanged(Dropdown change)
         {
-            var eventPointer = obj.GetComponent<EventPointer>();
-            if (eventPointer.eventName == eventName)
+            selectedEventID = change.value + 1;
+        }
+    
+        private void OnDropdownValueChanged(int index)
+        {
+            // Obtener el evento seleccionado y mostrar su objeto
+            var eventName = _dropdown.options[index].text;
+            foreach (var obj in _spawnedObjects)
             {
-                obj.SetActive(true);
-                _map.UpdateMap();
-                ActualizarEventos();
-
-                // Agregar el objeto visible a la lista de objetos visibles
-                _spawnedObjects.Add(obj);
-
-                break;
+                var eventPointer = obj.GetComponent<EventPointer>();
+                if (eventPointer.eventName == eventName)
+                {
+                    obj.SetActive(true);
+                    _map.UpdateMap();
+                    ActualizarEventos();
+    
+                    // Agregar el objeto visible a la lista de objetos visibles
+                    _spawnedObjects.Add(obj);
+    
+                    break;
+                }
             }
         }
-    }
-
-    private void DropdownValue(int index)
-    {
-        var eventName = _dropdown2.options[index].text;
-        foreach (var obj in _spawnedObjects)
+    
+        private void DropdownValue(int index)
         {
-            var eventPointer = obj.GetComponent<EventPointer>();
-            if (eventPointer.eventID == selectedEventID && obj.activeSelf)
+            var eventName = _dropdown2.options[index].text;
+            foreach (var obj in _spawnedObjects)
             {
-                obj.SetActive(false);
-                _spawnedObjects.Remove(obj);
-                ActualizarEventos();
-                break;
+                var eventPointer = obj.GetComponent<EventPointer>();
+                if (eventPointer.eventID == selectedEventID && obj.activeSelf)
+                {
+                    obj.SetActive(false);
+                    _spawnedObjects.Remove(obj);
+                    ActualizarEventos();
+                    break;
+                }
             }
         }
-    }
-
+    */
     public void ActualizarEventos()
     {
         StringBuilder sb = new StringBuilder("Puntos en el mapa:\n");
@@ -571,7 +582,6 @@ public class SpawnOnMap : MonoBehaviour
 
     public void NewEventShow()
     {
-        // Verificar si los arrays están nulos o tienen longitudes diferentes
         if (
             _spawnedObjects == null
             || _locations == null
@@ -590,19 +600,9 @@ public class SpawnOnMap : MonoBehaviour
         int count = _spawnedObjects.Count;
         for (int i = 0; i < count; i++)
         {
-            // Verificar si el índice está dentro de los límites del arreglo _spawnedObjects
-            if (i >= _spawnedObjects.Count)
+            if (i >= _spawnedObjects.Count || i >= _locations.Length)
             {
-                Debug.LogError("Index out of range: " + i);
-                continue;
-            }
-
-            // Verificar si el índice está dentro de los límites del arreglo _locations
-            if (i >= _locations.Length)
-            {
-                Debug.LogError(
-                    "No hay ubicación válida para el objeto spawnado en la posición " + i + "."
-                );
+                Debug.LogError("Índice fuera de rango: " + i);
                 continue;
             }
 
@@ -611,50 +611,44 @@ public class SpawnOnMap : MonoBehaviour
             spawnedObject.transform.localPosition = _map.GeoToWorldPosition(location, false);
             spawnedObject.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
 
-            // Obtener el ID del evento del objeto
             var eventID = spawnedObject.GetComponent<EventPointer>().eventID;
             Debug.Log("ID del evento: " + eventID);
 
-            // Verificar si el ID del evento está en la lista totalSitios
             if (lugaresElegidos.totalSitios.Contains(eventID))
             {
-                // Activar el objeto si el ID coincide
                 spawnedObject.SetActive(true);
                 Debug.Log("Objeto activado: " + spawnedObject.name);
             }
             else
             {
-                // Desactivar el objeto si el ID no coincide
                 spawnedObject.SetActive(false);
                 Debug.Log("Objeto desactivado: " + spawnedObject.name);
             }
-
-            // Construir la cadena de filtros activos
-            StringBuilder activeFiltersBuilder = new StringBuilder();
-
-            if (_showParks)
-                activeFiltersBuilder.Append("Parques, ");
-            if (_showMuseums)
-                activeFiltersBuilder.Append("Museos, ");
-            if (_showStatues)
-                activeFiltersBuilder.Append("Estatuas, ");
-            if (_showHistoric)
-                activeFiltersBuilder.Append("Lugares históricos, ");
-            if (_showObj)
-                activeFiltersBuilder.Append("");
-
-            // Eliminar la última coma y espacio de la cadena de filtros activos
-            if (activeFiltersBuilder.Length > 0)
-                activeFiltersBuilder.Length -= 2;
-
-            string activeFilters = activeFiltersBuilder.ToString();
-
-            // Actualizar el texto mostrando los filtros activos
-            _lugares.text =
-                "Vas a visitar: "
-                + activeFilters
-                + ".\n\n Antes de comenzar la ruta, asegúrate de llevarte tennis y suficiente agua.";
         }
+
+        StringBuilder activeFiltersBuilder = new StringBuilder();
+        if (_showParks)
+            activeFiltersBuilder.Append("Parques, ");
+        if (_showMuseums)
+            activeFiltersBuilder.Append("Museos, ");
+        if (_showStatues)
+            activeFiltersBuilder.Append("Estatuas, ");
+        if (_showHistoric)
+            activeFiltersBuilder.Append("Lugares históricos, ");
+        if (_showObj)
+            activeFiltersBuilder.Append("");
+
+        if (activeFiltersBuilder.Length > 0)
+            activeFiltersBuilder.Length -= 2;
+
+        string activeFilters = activeFiltersBuilder.ToString();
+
+        _lugares.text =
+            "Vas a visitar: "
+            + activeFilters
+            + ".\n\n Antes de comenzar la ruta, asegúrate de llevarte tennis y suficiente agua.";
+
+        ShowVisibleObjects(); // Llamada aquí también para actualizar inmediatamente después de cualquier cambio
     }
 
     public void DisableEventShow()
@@ -673,23 +667,74 @@ public class SpawnOnMap : MonoBehaviour
         }
     }
 
+    /*
     private void ShowVisibleObjects()
     {
-        // Usar StringBuilder para construir la cadena de texto que muestra los nombres de objetos visibles
-        StringBuilder sb = new StringBuilder("Puntos en el mapa:\n");
+        StringBuilder sb = new StringBuilder("");
 
-        // Recorrer la lista de objetos spawneados
         foreach (GameObject obj in _spawnedObjects)
         {
-            // Si el objeto está activo, agregar su nombre a la cadena de texto
             if (obj.activeSelf)
             {
                 sb.AppendLine(obj.GetComponent<EventPointer>().eventName);
+                sb.AppendLine("__________________\n");
             }
         }
 
-        // Mostrar la cadena de texto en la consola
-        _list.text = (sb.ToString());
+        string visibleObjects = sb.ToString();
+        Debug.Log(visibleObjects); // Mensaje de depuración para verificar la salida
+        _list.text = visibleObjects;
+    }*/
+
+    private void ShowVisibleObjects()
+    {
+        //Comprueba si el usuario ha elegido al menos un sitio
+        if (lugaresElegidos.totalSitios.Count == 0)
+        {
+            lugaresElegidos.ShowToast("No se ha elegido ningun Punto de interes");
+        }
+        else
+        {
+            txtTotalPuntosRuta.text="/"+lugaresElegidos.totalSitios.Count;
+            txtNumRuta.text=""+1;
+            Debug.Log("totalSitios tiene elementos: " + lugaresElegidos.totalSitios.Count);
+            float posY = 79.8f; // variable para llevar un seguimiento de la posición Y
+            ClearChildrenRuta();
+            foreach (var idLugar in lugaresElegidos.totalSitios)
+            {
+                foreach (var itemLugar in lugaresElegidos.DatosLugares)
+                {
+                    if (itemLugar.id == idLugar)
+                    {
+                        GameObject lugarObject = Instantiate(
+                            puntoInteresRutaPrefab,
+                            listaDesplegableContenedor
+                        );
+
+                        // ajusta la posición Y del objeto utilizando la variable posY
+                        RectTransform rt = lugarObject.GetComponent<RectTransform>();
+                        rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, posY);
+
+                        TextMeshProUGUI nombreText = lugarObject
+                            .transform.Find("Txt_NombreLugar")
+                            .GetComponent<TextMeshProUGUI>();
+                        nombreText.text = itemLugar.nombre;
+
+                        // aumenta el valor de posY en el espaciado deseado
+                        posY -= 210f;
+                    }
+                }
+            }
+        }
+    }
+
+    public void ClearChildrenRuta()
+    {
+        // Iterar sobre los hijos y destruirlos
+        foreach (Transform child in listaDesplegableContenedor)
+        {
+            Destroy(child.gameObject);
+        }
     }
 
     public void ToggleParks(bool value)

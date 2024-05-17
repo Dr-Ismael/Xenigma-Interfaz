@@ -187,7 +187,6 @@ public class MenuUIManager : MonoBehaviour
     public void Displaycercano()
     {
         if(iscercas == false && isrecomendado==false)
-        
         {
             eventPanelUserNotInRange.SetActive(false);
             cercano.SetActive(true);
