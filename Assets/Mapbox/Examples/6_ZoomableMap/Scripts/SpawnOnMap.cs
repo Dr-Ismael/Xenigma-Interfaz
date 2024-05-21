@@ -15,7 +15,7 @@ public class SpawnOnMap : MonoBehaviour
 
     [SerializeField]
     [Geocode]
-    string[] _locationStrings;
+    public string[] _locationStrings;
     Vector2d[] _locations;
 
     [SerializeField]
@@ -582,6 +582,7 @@ public class SpawnOnMap : MonoBehaviour
 
     public void NewEventShow()
     {
+        // Verificar si los arrays están nulos o tienen longitudes diferentes
         if (
             _spawnedObjects == null
             || _locations == null
@@ -600,32 +601,45 @@ public class SpawnOnMap : MonoBehaviour
         int count = _spawnedObjects.Count;
         for (int i = 0; i < count; i++)
         {
+            // Verificar si el índice está dentro de los límites de los arrays
             if (i >= _spawnedObjects.Count || i >= _locations.Length)
             {
                 Debug.LogError("Índice fuera de rango: " + i);
                 continue;
             }
 
+            // Obtener el objeto generado en la posición 'i' de la lista '_spawnedObjects'
             var spawnedObject = _spawnedObjects[i];
+
+            // Obtener la ubicación geográfica correspondiente en la posición 'i' de la lista '_locations'
             var location = _locations[i];
+
+            // Convertir la ubicación geográfica a posición en el mundo y asignarla
             spawnedObject.transform.localPosition = _map.GeoToWorldPosition(location, false);
+
+            // Ajustar la escala del objeto generado
             spawnedObject.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
 
+            // Obtener el ID del evento del objeto
             var eventID = spawnedObject.GetComponent<EventPointer>().eventID;
             Debug.Log("ID del evento: " + eventID);
 
+            // Verificar si el ID del evento está en la lista de sitios seleccionados
             if (lugaresElegidos.totalSitios.Contains(eventID))
             {
+                // Activar el objeto si el ID coincide
                 spawnedObject.SetActive(true);
                 Debug.Log("Objeto activado: " + spawnedObject.name);
             }
             else
             {
+                // Desactivar el objeto si el ID no coincide
                 spawnedObject.SetActive(false);
                 Debug.Log("Objeto desactivado: " + spawnedObject.name);
             }
         }
 
+        // Construir la cadena de filtros activos
         StringBuilder activeFiltersBuilder = new StringBuilder();
         if (_showParks)
             activeFiltersBuilder.Append("Parques, ");
@@ -638,17 +652,20 @@ public class SpawnOnMap : MonoBehaviour
         if (_showObj)
             activeFiltersBuilder.Append("");
 
+        // Eliminar la última coma y espacio de la cadena de filtros activos
         if (activeFiltersBuilder.Length > 0)
             activeFiltersBuilder.Length -= 2;
 
         string activeFilters = activeFiltersBuilder.ToString();
 
+        // Actualizar el texto mostrando los filtros activos
         _lugares.text =
             "Vas a visitar: "
             + activeFilters
             + ".\n\n Antes de comenzar la ruta, asegúrate de llevarte tennis y suficiente agua.";
 
-        ShowVisibleObjects(); // Llamada aquí también para actualizar inmediatamente después de cualquier cambio
+        // Llamar a ShowVisibleObjects() para actualizar la lista de objetos visibles
+        ShowVisibleObjects();
     }
 
     public void DisableEventShow()
@@ -686,6 +703,7 @@ public class SpawnOnMap : MonoBehaviour
         _list.text = visibleObjects;
     }*/
 
+    //Muestra elementos en la lista desplegable del menu de mapa
     private void ShowVisibleObjects()
     {
         //Comprueba si el usuario ha elegido al menos un sitio
@@ -695,8 +713,8 @@ public class SpawnOnMap : MonoBehaviour
         }
         else
         {
-            txtTotalPuntosRuta.text="/"+lugaresElegidos.totalSitios.Count;
-            txtNumRuta.text=""+1;
+            txtTotalPuntosRuta.text = "/" + lugaresElegidos.totalSitios.Count;
+            txtNumRuta.text = "" + 1;
             Debug.Log("totalSitios tiene elementos: " + lugaresElegidos.totalSitios.Count);
             float posY = 79.8f; // variable para llevar un seguimiento de la posición Y
             ClearChildrenRuta();
@@ -728,6 +746,7 @@ public class SpawnOnMap : MonoBehaviour
         }
     }
 
+    //Limpia la lista de puntos de interes elegidos
     public void ClearChildrenRuta()
     {
         // Iterar sobre los hijos y destruirlos

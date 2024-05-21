@@ -17,13 +17,7 @@ public class UIManager : MonoBehaviour
 
     private MySqlDataReader MS_Reader;
 
-    //Listas de datos del usuario y de avatares
-    public List<DatosUsuario> DatosUsuario = new List<DatosUsuario>();
-    public List<Lista> Avatares = new List<Lista>();
-
-    public Image imgAvatarUsuario;
-
-    public TextMeshProUGUI txtNicknameUsuario;
+    public TextMeshProUGUI txtClanUsuario;
 
     public ConexionMySQL conexionMySQL;
 
@@ -56,7 +50,7 @@ public class UIManager : MonoBehaviour
 
         if (int.TryParse(idUserString, out idUser))
         {
-            string queryInfo = "SELECT nickname, idAvatar FROM users WHERE id = '" + idUser + "';";
+            string queryInfo = "SELECT NombreClan FROM clanes WHERE id_lider = '" + idUser + "';";
 
             MS_Connection = new MySqlConnection(connectionString);
             MS_Connection.Open();
@@ -67,23 +61,9 @@ public class UIManager : MonoBehaviour
             while (MS_Reader.Read())
             {
                 // Recupera los datos del usuario y asígnalos a variables
-                string nickname = MS_Reader.GetString(0);
-                int idAvatar = MS_Reader.GetInt32(1);
+                string nombreClan = MS_Reader.GetString(0);
 
-                // Busca la imagen correspondiente en la lista de objetos
-                Lista imagenSeleccionada = Avatares.Find(imagen => imagen.ID == idAvatar);
-
-                if (imagenSeleccionada != null)
-                {
-                    Debug.Log("Avatar del miembro: " + imagenSeleccionada.ID);
-                    imgAvatarUsuario.sprite = imagenSeleccionada.Image.sprite; // Asigna el sprite de la imagen seleccionada a infoMemberImage
-                }
-                else
-                {
-                    Debug.Log("No se encontró la imagen seleccionada");
-                }
-
-                txtNicknameUsuario.text = nickname;
+                txtClanUsuario.text = nombreClan;
             }
             MS_Reader.Close();
         }
@@ -98,6 +78,5 @@ public class UIManager : MonoBehaviour
 public class DatosUsuario
 {
     public int id;
-    public string nickname;
-    public int idAvatar;
+    public string clanName;
 }

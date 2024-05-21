@@ -332,7 +332,7 @@ public class CargarDatosLugar : MonoBehaviour
     //Agrega lugares a la lista
     public void agregarVisitaLugar(int idLugar)
     {
-        bool sitioEncontrado = false;
+        //bool sitioEncontrado = false;
 
         // Verifica si el lugar está en alguna de las otras listas y lo elimina
         if (totalLugares.Contains(idLugar))
